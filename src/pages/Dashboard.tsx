@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AppNav from '@/components/layout/AppNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -17,6 +17,7 @@ export default function Dashboard() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [hasAnalyzed, setHasAnalyzed] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const [userName, setUserName] = useState('');
   const [resumeScore, setResumeScore] = useState<ResumeScore>({
     overall: 75,
     keywords: 7,
@@ -31,6 +32,23 @@ export default function Dashboard() {
       skills: false,
     }
   });
+  
+  useEffect(() => {
+    // Get the user's email from localStorage
+    const userEmail = localStorage.getItem('userEmail') || '';
+    
+    // Parse name from email if available
+    if (userEmail) {
+      const namePart = userEmail.split('@')[0];
+      const formattedName = namePart
+        .split(/[._-]/)
+        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(' ');
+      setUserName(formattedName);
+    } else {
+      setUserName('User');
+    }
+  }, []);
   
   const handleResumeUpload = (file: File) => {
     setFile(file);
@@ -103,7 +121,7 @@ export default function Dashboard() {
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between">
               <div>
-                <h1 className="text-2xl font-bold mb-2">Welcome, Jessica</h1>
+                <h1 className="text-2xl font-bold mb-2">Welcome, {userName}</h1>
                 <p className="text-muted-foreground">
                   Let's optimize your resume and boost your career opportunities
                 </p>

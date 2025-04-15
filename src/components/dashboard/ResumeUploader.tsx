@@ -34,7 +34,7 @@ export default function ResumeUploader({ onUpload }: { onUpload?: (file: File) =
         variant: "destructive"
       });
     }
-  }, [toast, onUpload]);
+  }, [toast]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
