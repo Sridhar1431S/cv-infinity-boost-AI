@@ -26,12 +26,7 @@ export default function ResumeUploader({ onUpload }: { onUpload?: (file: File) =
     const droppedFile = e.dataTransfer.files[0];
     if (droppedFile && (droppedFile.type === 'application/pdf' || droppedFile.type === 'application/msword' || 
         droppedFile.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
-      setFile(droppedFile);
-      if (onUpload) onUpload(droppedFile);
-      toast({
-        title: "Resume uploaded",
-        description: `${droppedFile.name} has been successfully uploaded.`,
-      });
+      handleFileSelected(droppedFile);
     } else {
       toast({
         title: "Invalid file format",
@@ -44,13 +39,19 @@ export default function ResumeUploader({ onUpload }: { onUpload?: (file: File) =
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      setFile(selectedFile);
-      if (onUpload) onUpload(selectedFile);
-      toast({
-        title: "Resume uploaded",
-        description: `${selectedFile.name} has been successfully uploaded.`,
-      });
+      handleFileSelected(selectedFile);
     }
+  };
+
+  const handleFileSelected = (selectedFile: File) => {
+    setFile(selectedFile);
+    toast({
+      title: "Resume uploaded",
+      description: `${selectedFile.name} has been successfully uploaded.`,
+    });
+    
+    // Notify parent component immediately when a file is selected
+    if (onUpload) onUpload(selectedFile);
   };
 
   const handleAnalyzeClick = () => {

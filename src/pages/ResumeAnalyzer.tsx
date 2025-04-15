@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { FileText, CheckCircle, AlertTriangle, Info, Download } from 'lucide-react';
+import { FileText, CheckCircle, AlertTriangle, Info, Download, RefreshCw } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { Progress } from '@/components/ui/progress';
 
@@ -14,8 +14,22 @@ export default function ResumeAnalyzer() {
   const { toast } = useToast();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [hasAnalyzed, setHasAnalyzed] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
   
   const handleResumeUpload = (file: File) => {
+    setFile(file);
+  };
+  
+  const handleAnalyze = () => {
+    if (!file) {
+      toast({
+        title: "No file selected",
+        description: "Please upload a resume file first.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setIsAnalyzing(true);
     
     // Simulate API call delay
@@ -30,21 +44,46 @@ export default function ResumeAnalyzer() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-background to-background/80 relative overflow-hidden">
+      {/* Neon light effects */}
+      <div className="fixed top-1/4 -left-36 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+      <div className="fixed top-3/4 -right-36 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+      <div className="fixed bottom-1/3 left-1/3 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+      
       <AppNav />
       
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-4 py-6 relative z-10">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Resume Analyzer</h1>
+          <h1 className="text-2xl font-bold neon-text-purple">Resume Analyzer</h1>
         </div>
         
         {/* Upload Section */}
-        <Card className="mb-6">
+        <Card className="mb-6 animate-on-tap">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg">Upload your resume for detailed analysis</CardTitle>
           </CardHeader>
           <CardContent>
             <ResumeUploader onUpload={handleResumeUpload} />
+            
+            <div className="flex justify-end mt-4">
+              <Button 
+                onClick={handleAnalyze}
+                className="bg-brand-purple hover:bg-brand-purpleDark neon-glow animate-on-tap"
+                disabled={isAnalyzing || !file}
+              >
+                {isAnalyzing ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    <FileText className="h-4 w-4 mr-2" />
+                    Analyze Resume
+                  </>
+                )}
+              </Button>
+            </div>
           </CardContent>
         </Card>
         

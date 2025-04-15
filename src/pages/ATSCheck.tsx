@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import AppNav from '@/components/layout/AppNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -230,7 +229,6 @@ export default function ATSCheck() {
           </div>
         )}
         
-        {/* Loading State */}
         {isAnalyzing && (
           <Card className="animate-on-tap">
             <CardContent className="p-6 flex flex-col items-center justify-center">
@@ -244,7 +242,6 @@ export default function ATSCheck() {
           </Card>
         )}
         
-        {/* Empty State */}
         {!isAnalyzing && !hasAnalyzed && (
           <Card className="border-dashed border-2 animate-on-tap">
             <CardContent className="p-12 flex flex-col items-center justify-center text-center">

@@ -2,18 +2,21 @@
 import { useState } from 'react';
 import AppNav from '@/components/layout/AppNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import ResumeUploader from '@/components/dashboard/ResumeUploader';
 import ResumeScorecard, { ResumeScore } from '@/components/dashboard/ResumeScorecard';
 import KeywordSuggestions from '@/components/dashboard/KeywordSuggestions';
 import JobDescriptionImport from '@/components/dashboard/JobDescriptionImport';
 import VersionHistory from '@/components/dashboard/VersionHistory';
 import PremiumFeatures from '@/components/dashboard/PremiumFeatures';
+import { RefreshCw, FileText } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 export default function Dashboard() {
   const { toast } = useToast();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [hasAnalyzed, setHasAnalyzed] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
   const [resumeScore, setResumeScore] = useState<ResumeScore>({
     overall: 75,
     keywords: 7,
@@ -30,6 +33,19 @@ export default function Dashboard() {
   });
   
   const handleResumeUpload = (file: File) => {
+    setFile(file);
+  };
+  
+  const handleAnalyze = () => {
+    if (!file) {
+      toast({
+        title: "No file selected", 
+        description: "Please upload a resume file first.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setIsAnalyzing(true);
     
     // Simulate API call delay
@@ -44,6 +60,15 @@ export default function Dashboard() {
   };
   
   const handleJobDescriptionAnalyze = (text: string) => {
+    if (!file) {
+      toast({
+        title: "No resume uploaded", 
+        description: "Please upload your resume before analyzing job match.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setIsAnalyzing(true);
     
     // Simulate API call delay
@@ -64,12 +89,17 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-background to-background/80 relative overflow-hidden">
+      {/* Neon light effects */}
+      <div className="fixed top-1/4 -left-36 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+      <div className="fixed top-3/4 -right-36 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+      <div className="fixed bottom-1/3 left-1/3 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+      
       <AppNav />
       
-      <main className="container mx-auto px-4 py-6">
+      <main className="container mx-auto px-4 py-6 relative z-10">
         {/* Welcome Card */}
-        <Card className="mb-6">
+        <Card className="mb-6 animate-on-tap">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between">
               <div>
@@ -83,10 +113,34 @@ export default function Dashboard() {
         </Card>
 
         {/* Resume Upload Section */}
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-3">Analyze Your Resume</h2>
-          <ResumeUploader onUpload={handleResumeUpload} />
-        </div>
+        <Card className="mb-6 animate-on-tap">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg">Analyze Your Resume</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ResumeUploader onUpload={handleResumeUpload} />
+            
+            <div className="flex justify-end mt-4">
+              <Button 
+                onClick={handleAnalyze}
+                className="bg-brand-purple hover:bg-brand-purpleDark neon-glow animate-on-tap"
+                disabled={isAnalyzing || !file}
+              >
+                {isAnalyzing ? (
+                  <>
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    <FileText className="h-4 w-4 mr-2" />
+                    Analyze Resume
+                  </>
+                )}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
         
         {/* Main Dashboard Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
