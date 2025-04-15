@@ -111,14 +111,14 @@ export default function ResumeUploader({ onUpload }: { onUpload?: (file: File) =
                   Supports PDF, DOC, DOCX (Max 5MB)
                 </p>
               </div>
-              <label className="cursor-pointer">
+              <label className="cursor-pointer mt-2 w-full flex justify-center">
                 <input
                   type="file"
                   className="hidden"
                   accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                   onChange={handleFileChange}
                 />
-                <Button type="button" variant="outline" className="mt-2 animate-on-tap">
+                <Button type="button" variant="outline" className="animate-on-tap neon-glow">
                   <Upload className="h-4 w-4 mr-2" />
                   Select File
                 </Button>
