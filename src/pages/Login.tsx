@@ -26,6 +26,9 @@ export default function Login() {
       if (isLogin) {
         // Simple validation
         if (email && password) {
+          // Store email in localStorage for account info
+          localStorage.setItem('userEmail', email);
+          
           toast({
             title: "Login successful",
             description: "Welcome back to CVInfinityBoost!",
@@ -39,18 +42,34 @@ export default function Login() {
           });
         }
       } else {
-        toast({
-          title: "Account created",
-          description: "Welcome to CVInfinityBoost!",
-        });
-        navigate('/dashboard');
+        if (email && password) {
+          // Store email in localStorage for account info
+          localStorage.setItem('userEmail', email);
+          
+          toast({
+            title: "Account created",
+            description: "Welcome to CVInfinityBoost!",
+          });
+          navigate('/dashboard');
+        } else {
+          toast({
+            title: "Registration failed",
+            description: "Please enter both email and password.",
+            variant: "destructive"
+          });
+        }
       }
     }, 1000);
   };
   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-background/80 relative overflow-hidden px-4 py-12 sm:px-6 lg:px-8">
+      {/* Neon light effects */}
+      <div className="fixed top-1/4 -left-36 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+      <div className="fixed top-3/4 -right-36 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+      <div className="fixed bottom-1/3 left-1/3 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+
+      <div className="w-full max-w-md space-y-8 relative z-10">
         <div className="text-center">
           <div className="mx-auto h-12 w-12 rounded-full gradient-bg flex items-center justify-center">
             <span className="text-white text-xl font-bold">CV</span>
@@ -63,7 +82,7 @@ export default function Login() {
           </p>
         </div>
 
-        <Card>
+        <Card className="animate-on-tap">
           <CardHeader>
             <CardTitle>{isLogin ? "Sign in to your account" : "Create an account"}</CardTitle>
             <CardDescription>

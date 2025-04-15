@@ -43,6 +43,10 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 240 5.9% 90%;
     --sidebar-ring: 254 73% 63%;
+
+    --neon-purple: 254 73% 63%;
+    --neon-blue: 217 91% 60%;
+    --neon-pink: 336 80% 58%;
   }
 
   .dark {
@@ -82,6 +86,10 @@
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 254 73% 63%;
+    
+    --neon-purple: 254 73% 63%;
+    --neon-blue: 217 91% 60%;
+    --neon-pink: 336 80% 58%;
   }
 }
 
@@ -92,6 +100,43 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .animate-on-tap {
+    @apply transition-all duration-200 hover:shadow-md active:scale-95;
+  }
+  
+  .neon-text-purple {
+    @apply text-purple-500;
+    text-shadow: 0 0 5px theme('colors.purple.300'), 
+                0 0 10px theme('colors.purple.400'),
+                0 0 15px theme('colors.purple.500');
+  }
+  
+  .neon-text-blue {
+    @apply text-blue-500;
+    text-shadow: 0 0 5px theme('colors.blue.300'), 
+                0 0 10px theme('colors.blue.400'),
+                0 0 15px theme('colors.blue.500');
+  }
+  
+  .neon-border {
+    @apply border border-purple-400;
+    box-shadow: 0 0 5px theme('colors.purple.300'),
+                0 0 10px theme('colors.purple.400'),
+                inset 0 0 5px theme('colors.purple.300');
+  }
+  
+  .neon-glow {
+    box-shadow: 0 0 5px theme('colors.purple.300'),
+                0 0 10px theme('colors.purple.400'),
+                0 0 15px theme('colors.purple.500');
+  }
+
+  .bg-gradient-neon {
+    @apply bg-gradient-to-br from-purple-500/20 via-background to-blue-500/20;
   }
 }
 

@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import ResumeAnalyzer from "./pages/ResumeAnalyzer";
 import JobMatch from "./pages/JobMatch";
 import ATSCheck from "./pages/ATSCheck";
+import Account from "./pages/Account";
 import NotFound from "./pages/NotFound";
 
 // Create a new QueryClient instance outside of the component
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/resume-analyzer" element={<ResumeAnalyzer />} />
             <Route path="/job-match" element={<JobMatch />} />
             <Route path="/ats-check" element={<ATSCheck />} />
+            <Route path="/account" element={<Account />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
