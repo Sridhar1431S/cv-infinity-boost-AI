@@ -9,11 +9,14 @@ import KeywordSuggestions from '@/components/dashboard/KeywordSuggestions';
 import JobDescriptionImport from '@/components/dashboard/JobDescriptionImport';
 import VersionHistory from '@/components/dashboard/VersionHistory';
 import PremiumFeatures from '@/components/dashboard/PremiumFeatures';
-import { RefreshCw, FileText } from 'lucide-react';
+import { RefreshCw, FileText, History } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import Footer from '@/components/layout/Footer';
+import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [hasAnalyzed, setHasAnalyzed] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -76,8 +79,8 @@ export default function Dashboard() {
       // Use file name as a seed for pseudo-randomness
       let seedValue = file.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
       const rng = () => {
-        const x = Math.sin(seedValue++) * 10000;
-        return x - Math.floor(x);
+        seedValue = (seedValue * 9301 + 49297) % 233280;
+        return seedValue / 233280;
       };
       
       // Generate more varied scores
@@ -172,12 +175,22 @@ export default function Dashboard() {
         {/* Welcome Card */}
         <Card className="mb-6 animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
           <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-bold mb-2 gradient-text">Welcome, {userName}</h1>
+                <h1 className="text-2xl font-bold mb-2 text-purple-500">Welcome, {userName}</h1>
                 <p className="text-muted-foreground">
                   Let's optimize your resume and boost your career opportunities
                 </p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                <Button 
+                  variant="outline"
+                  onClick={() => navigate('/history')}
+                  className="animate-on-tap"
+                >
+                  <History className="h-4 w-4 mr-2" />
+                  View History
+                </Button>
               </div>
             </div>
           </CardContent>
@@ -186,7 +199,7 @@ export default function Dashboard() {
         {/* Resume Upload Section */}
         <Card className="mb-6 animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg gradient-text">Analyze Your Resume</CardTitle>
+            <CardTitle className="text-lg text-purple-500">Analyze Your Resume</CardTitle>
           </CardHeader>
           <CardContent>
             <ResumeUploader onUpload={handleResumeUpload} />
@@ -244,6 +257,8 @@ export default function Dashboard() {
           </div>
         </div>
       </main>
+      
+      <Footer />
     </div>
   );
 }
