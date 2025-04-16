@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import AppNav from '@/components/layout/AppNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -153,16 +154,18 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen dark bg-gradient-neon relative overflow-hidden">
+      {/* Background effects */}
       <div className="fixed top-1/4 -left-36 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
       <div className="fixed top-3/4 -right-36 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
       <div className="fixed bottom-1/3 left-1/3 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
       
       <AppNav />
       
-      <main className="container mx-auto px-4 py-6 relative z-10">
+      <main className="container mx-auto px-4 py-6 relative z-10 max-w-5xl">
+        {/* Welcome Card */}
         <Card className="mb-6 animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
           <CardContent className="p-6">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
                 <h1 className="text-2xl font-bold mb-2 text-purple-500">Welcome, {userName}</h1>
                 <p className="text-muted-foreground">
@@ -183,6 +186,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
+        {/* Upload/Analysis Card */}
         <Card className="mb-6 animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg text-purple-500">Analyze Your Resume</CardTitle>
@@ -212,28 +216,57 @@ export default function Dashboard() {
           </CardContent>
         </Card>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-          <div className="lg:col-span-1">
-            <ResumeScorecard score={resumeScore} isLoading={isAnalyzing && !hasAnalyzed} />
-          </div>
+        {/* Main content section - stacked layout */}
+        <div className="space-y-6">
+          {/* Resume Scorecard */}
+          <Card className="w-full animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg text-purple-500">Resume Score Overview</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResumeScorecard score={resumeScore} isLoading={isAnalyzing && !hasAnalyzed} />
+            </CardContent>
+          </Card>
           
-          <div className="lg:col-span-1">
-            <KeywordSuggestions isLoading={isAnalyzing && !hasAnalyzed} />
-          </div>
+          {/* Keywords Suggestions */}
+          <Card className="w-full animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg text-purple-500">Keyword Suggestions</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <KeywordSuggestions isLoading={isAnalyzing && !hasAnalyzed} />
+            </CardContent>
+          </Card>
           
-          <div className="lg:col-span-1">
-            <JobDescriptionImport onAnalyze={handleJobDescriptionAnalyze} />
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-2">
-            <VersionHistory isLoading={isAnalyzing && !hasAnalyzed} />
-          </div>
+          {/* Job Description Import */}
+          <Card className="w-full animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg text-purple-500">Job Description Matching</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <JobDescriptionImport onAnalyze={handleJobDescriptionAnalyze} />
+            </CardContent>
+          </Card>
           
-          <div className="md:col-span-1">
-            <PremiumFeatures />
-          </div>
+          {/* Version History */}
+          <Card className="w-full animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg text-purple-500">Version History</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <VersionHistory isLoading={isAnalyzing && !hasAnalyzed} />
+            </CardContent>
+          </Card>
+          
+          {/* Premium Features */}
+          <Card className="w-full animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg text-purple-500">Premium Features</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <PremiumFeatures />
+            </CardContent>
+          </Card>
         </div>
       </main>
       
