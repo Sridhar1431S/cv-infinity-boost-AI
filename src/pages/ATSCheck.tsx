@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import AppNav from '@/components/layout/AppNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,9 +24,23 @@ export default function ATSCheck() {
   const [hasAnalyzed, setHasAnalyzed] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [atsScore, setAtsScore] = useState(78);
+  const [atsChecks, setAtsChecks] = useState([
+    { name: "Parsable Format", passed: true },
+    { name: "No Images", passed: true },
+    { name: "No Tables", passed: true },
+    { name: "Standard Section Headers", passed: false },
+    { name: "Contact Info Detected", passed: true },
+    { name: "No Special Characters", passed: false },
+    { name: "Simple Formatting", passed: true },
+    { name: "No Columns", passed: true }
+  ]);
   
-  const handleResumeUpload = (file: File) => {
+  const handleResumeUpload = (file: File | null) => {
     setFile(file);
+    
+    if (!file) {
+      setHasAnalyzed(false);
+    }
   };
   
   const handleCheck = () => {
@@ -40,13 +55,42 @@ export default function ATSCheck() {
     
     setIsAnalyzing(true);
     
+    // Generate random analysis based on file name
+    const generateRandomAnalysis = () => {
+      const seed = file.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      const rng = () => {
+        const x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+      };
+      
+      // Generate score between 45-95 for more varied results
+      const score = Math.floor(45 + rng() * 51);
+      
+      // Generate random checks
+      const checks = [
+        { name: "Parsable Format", passed: rng() > 0.1 }, // 90% chance to pass
+        { name: "No Images", passed: rng() > 0.2 }, // 80% chance to pass
+        { name: "No Tables", passed: rng() > 0.3 }, // 70% chance to pass
+        { name: "Standard Section Headers", passed: rng() > 0.4 }, // 60% chance to pass
+        { name: "Contact Info Detected", passed: rng() > 0.2 }, // 80% chance to pass
+        { name: "No Special Characters", passed: rng() > 0.5 }, // 50% chance to pass
+        { name: "Simple Formatting", passed: rng() > 0.3 }, // 70% chance to pass
+        { name: "No Columns", passed: rng() > 0.25 } // 75% chance to pass
+      ];
+      
+      return { score, checks };
+    };
+    
     // Simulate API call delay
     setTimeout(() => {
+      const analysis = generateRandomAnalysis();
+      setAtsScore(analysis.score);
+      setAtsChecks(analysis.checks);
       setIsAnalyzing(false);
       setHasAnalyzed(true);
       toast({
         title: "ATS Check Complete",
-        description: "See how your resume performs with ATS systems.",
+        description: `Your resume scored ${analysis.score}/100 on ATS compatibility.`,
       });
     }, 1500);
   };
@@ -56,17 +100,6 @@ export default function ATSCheck() {
     if (score >= 60) return "bg-amber-500";
     return "bg-red-500";
   };
-  
-  const atsChecks = [
-    { name: "Parsable Format", passed: true },
-    { name: "No Images", passed: true },
-    { name: "No Tables", passed: true },
-    { name: "Standard Section Headers", passed: false },
-    { name: "Contact Info Detected", passed: true },
-    { name: "No Special Characters", passed: false },
-    { name: "Simple Formatting", passed: true },
-    { name: "No Columns", passed: true }
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-background/80 relative overflow-hidden">
@@ -189,25 +222,53 @@ export default function ATSCheck() {
                     <h3 className="font-medium text-lg mb-3">Recommendations</h3>
                     
                     <div className="space-y-3">
-                      <div className="flex items-start gap-2 animate-on-tap">
-                        <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
-                        <div>
-                          <h4 className="font-medium">Use Standard Section Headers</h4>
-                          <p className="text-sm text-gray-600">
-                            Replace "Professional Journey" with "Work Experience" or "Experience" for better ATS parsing.
-                          </p>
+                      {atsChecks.some(check => !check.passed && check.name === "Standard Section Headers") && (
+                        <div className="flex items-start gap-2 animate-on-tap">
+                          <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
+                          <div>
+                            <h4 className="font-medium">Use Standard Section Headers</h4>
+                            <p className="text-sm text-gray-600">
+                              Replace custom headers with standard ones like "Work Experience" or "Education" for better ATS parsing.
+                            </p>
+                          </div>
                         </div>
-                      </div>
+                      )}
                       
-                      <div className="flex items-start gap-2 animate-on-tap">
-                        <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
-                        <div>
-                          <h4 className="font-medium">Remove Special Characters</h4>
-                          <p className="text-sm text-gray-600">
-                            Avoid using special characters like ★ and → in your resume as they may cause parsing issues.
-                          </p>
+                      {atsChecks.some(check => !check.passed && check.name === "No Special Characters") && (
+                        <div className="flex items-start gap-2 animate-on-tap">
+                          <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
+                          <div>
+                            <h4 className="font-medium">Remove Special Characters</h4>
+                            <p className="text-sm text-gray-600">
+                              Avoid using special characters like ★ and → in your resume as they may cause parsing issues.
+                            </p>
+                          </div>
                         </div>
-                      </div>
+                      )}
+
+                      {atsChecks.some(check => !check.passed && check.name === "No Tables") && (
+                        <div className="flex items-start gap-2 animate-on-tap">
+                          <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
+                          <div>
+                            <h4 className="font-medium">Avoid Table Layouts</h4>
+                            <p className="text-sm text-gray-600">
+                              Tables can confuse ATS systems. Use standard paragraphs and bullet points instead.
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
+                      {atsChecks.some(check => !check.passed && check.name === "No Columns") && (
+                        <div className="flex items-start gap-2 animate-on-tap">
+                          <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
+                          <div>
+                            <h4 className="font-medium">Use Single-Column Layout</h4>
+                            <p className="text-sm text-gray-600">
+                              Multi-column layouts can confuse ATS systems. Stick to a single column format.
+                            </p>
+                          </div>
+                        </div>
+                      )}
                       
                       <div className="p-4 bg-accent/50 rounded-md mt-4 border border-accent animate-on-tap neon-border">
                         <div className="flex items-center justify-between">

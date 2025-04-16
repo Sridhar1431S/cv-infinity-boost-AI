@@ -1,11 +1,11 @@
 
 import { useState, useCallback } from 'react';
-import { FileUp, Upload, File } from 'lucide-react';
+import { FileUp, Upload, File, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
 
-export default function ResumeUploader({ onUpload }: { onUpload?: (file: File) => void }) {
+export default function ResumeUploader({ onUpload }: { onUpload?: (file: File | null) => void }) {
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const { toast } = useToast();
@@ -54,6 +54,17 @@ export default function ResumeUploader({ onUpload }: { onUpload?: (file: File) =
     if (onUpload) onUpload(selectedFile);
   };
 
+  const handleDeleteFile = () => {
+    setFile(null);
+    toast({
+      title: "File removed",
+      description: "Resume file has been removed successfully.",
+    });
+    
+    // Notify parent component that file has been deleted
+    if (onUpload) onUpload(null);
+  };
+
   const handleAnalyzeClick = () => {
     if (file && onUpload) {
       onUpload(file);
@@ -90,12 +101,22 @@ export default function ResumeUploader({ onUpload }: { onUpload?: (file: File) =
                 <p className="text-sm font-medium truncate">{file.name}</p>
                 <p className="text-xs text-muted-foreground">{(file.size / 1024).toFixed(1)} KB</p>
               </div>
-              <Button 
-                onClick={handleAnalyzeClick} 
-                className="bg-brand-purple hover:bg-brand-purpleDark neon-glow animate-on-tap"
-              >
-                Analyze
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button 
+                  onClick={handleDeleteFile}
+                  variant="outline" 
+                  size="sm"
+                  className="animate-on-tap"
+                >
+                  <Trash2 className="h-4 w-4 text-red-500" />
+                </Button>
+                <Button 
+                  onClick={handleAnalyzeClick} 
+                  className="bg-brand-purple hover:bg-brand-purpleDark neon-glow animate-on-tap"
+                >
+                  Analyze
+                </Button>
+              </div>
             </div>
           ) : (
             <>

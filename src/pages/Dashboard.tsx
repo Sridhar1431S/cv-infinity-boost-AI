@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import AppNav from '@/components/layout/AppNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -49,8 +50,13 @@ export default function Dashboard() {
     }
   }, []);
   
-  const handleResumeUpload = (file: File) => {
+  const handleResumeUpload = (file: File | null) => {
     setFile(file);
+    
+    if (!file) {
+      setHasAnalyzed(false);
+      return;
+    }
   };
   
   const handleAnalyze = () => {
@@ -65,13 +71,48 @@ export default function Dashboard() {
     
     setIsAnalyzing(true);
     
+    // Generate random scores based on file name to simulate different analyses
+    const generateRandomScore = () => {
+      // Use file name as a seed for pseudo-randomness
+      const seed = file.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      const rng = () => {
+        const x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+      };
+      
+      // Generate more varied scores
+      const overall = Math.floor(50 + rng() * 50); // 50-100 range
+      const keywords = Math.floor(4 + rng() * 7); // 4-10 range
+      const readability = Math.floor(5 + rng() * 6); // 5-10 range
+      const atsCompatibility = Math.floor(3 + rng() * 8); // 3-10 range
+      const format = Math.floor(6 + rng() * 5); // 6-10 range
+      
+      // Random sections presence
+      return {
+        overall,
+        keywords,
+        readability,
+        atsCompatibility,
+        format,
+        sections: {
+          contact: rng() > 0.1, // 90% chance true
+          summary: rng() > 0.3, // 70% chance true
+          experience: rng() > 0.2, // 80% chance true
+          education: rng() > 0.2, // 80% chance true
+          skills: rng() > 0.4, // 60% chance true
+        }
+      };
+    };
+    
     // Simulate API call delay
     setTimeout(() => {
+      const newScore = generateRandomScore();
+      setResumeScore(newScore);
       setIsAnalyzing(false);
       setHasAnalyzed(true);
       toast({
         title: "Analysis Complete",
-        description: "Your resume has been analyzed. See results below.",
+        description: `Your resume scored ${newScore.overall}/100. See results below.`,
       });
     }, 1500);
   };
@@ -88,19 +129,32 @@ export default function Dashboard() {
     
     setIsAnalyzing(true);
     
+    // Generate random score based on file name and job description
+    const seed = (file.name + text).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const rng = () => {
+      const x = Math.sin(seed++) * 10000;
+      return x - Math.floor(x);
+    };
+    
+    const jobMatchScore = Math.floor(40 + rng() * 60); // 40-100 range
+    const keywordMatchScore = Math.floor(3 + rng() * 8); // 3-10 range
+    
     // Simulate API call delay
     setTimeout(() => {
       setIsAnalyzing(false);
-      // Update the score slightly for demo purposes
+      // Update the score based on job description and file
       setResumeScore(prev => ({
         ...prev,
-        overall: 68,
-        keywords: 5,
-        atsCompatibility: 6
+        overall: jobMatchScore,
+        keywords: keywordMatchScore,
+        atsCompatibility: Math.floor(3 + rng() * 8)
       }));
+      
       toast({
         title: "Job Match Complete",
-        description: "Your resume doesn't match well with this job. See suggestions.",
+        description: jobMatchScore >= 70 
+          ? "Your resume matches well with this job."
+          : "Your resume doesn't match well with this job. See suggestions.",
       });
     }, 1500);
   };
