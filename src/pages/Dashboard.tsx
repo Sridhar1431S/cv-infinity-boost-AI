@@ -74,9 +74,9 @@ export default function Dashboard() {
     // Generate random scores based on file name to simulate different analyses
     const generateRandomScore = () => {
       // Use file name as a seed for pseudo-randomness
-      const seed = file.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      let seedValue = file.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
       const rng = () => {
-        const x = Math.sin(seed++) * 10000;
+        const x = Math.sin(seedValue++) * 10000;
         return x - Math.floor(x);
       };
       
@@ -130,9 +130,9 @@ export default function Dashboard() {
     setIsAnalyzing(true);
     
     // Generate random score based on file name and job description
-    const seed = (file.name + text).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    let seedVal = (file.name + text).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const rng = () => {
-      const x = Math.sin(seed++) * 10000;
+      const x = Math.sin(seedVal++) * 10000;
       return x - Math.floor(x);
     };
     
@@ -160,7 +160,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-background/80 relative overflow-hidden">
+    <div className="min-h-screen dark bg-gradient-neon relative overflow-hidden">
       {/* Neon light effects */}
       <div className="fixed top-1/4 -left-36 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
       <div className="fixed top-3/4 -right-36 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
@@ -170,11 +170,11 @@ export default function Dashboard() {
       
       <main className="container mx-auto px-4 py-6 relative z-10">
         {/* Welcome Card */}
-        <Card className="mb-6 animate-on-tap">
+        <Card className="mb-6 animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between">
               <div>
-                <h1 className="text-2xl font-bold mb-2">Welcome, {userName}</h1>
+                <h1 className="text-2xl font-bold mb-2 gradient-text">Welcome, {userName}</h1>
                 <p className="text-muted-foreground">
                   Let's optimize your resume and boost your career opportunities
                 </p>
@@ -184,9 +184,9 @@ export default function Dashboard() {
         </Card>
 
         {/* Resume Upload Section */}
-        <Card className="mb-6 animate-on-tap">
+        <Card className="mb-6 animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Analyze Your Resume</CardTitle>
+            <CardTitle className="text-lg gradient-text">Analyze Your Resume</CardTitle>
           </CardHeader>
           <CardContent>
             <ResumeUploader onUpload={handleResumeUpload} />

@@ -1,108 +1,158 @@
 
 import { useState } from 'react';
 import AppNav from '@/components/layout/AppNav';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { CircleCheck, AlertCircle, Info } from 'lucide-react';
 import ResumeUploader from '@/components/dashboard/ResumeUploader';
-import { 
-  CheckSquare, 
-  FileText, 
-  Download, 
-  CheckCircle2, 
-  XCircle, 
-  AlertTriangle,
-  RefreshCw,
-  Lock
-} from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+
+// Define the structure of ATS recommendations
+interface ATSRecommendation {
+  type: 'success' | 'warning' | 'info';
+  message: string;
+}
+
+// Define structure of the ATS Analysis results
+interface ATSAnalysis {
+  score: number;
+  compatibility: number;
+  readability: number;
+  keywords: {
+    matched: string[];
+    missing: string[];
+  };
+  recommendations: ATSRecommendation[];
+  format: {
+    isValid: boolean;
+    issues: string[];
+  };
+}
 
 export default function ATSCheck() {
   const { toast } = useToast();
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [hasAnalyzed, setHasAnalyzed] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [atsScore, setAtsScore] = useState(78);
-  const [atsChecks, setAtsChecks] = useState([
-    { name: "Parsable Format", passed: true },
-    { name: "No Images", passed: true },
-    { name: "No Tables", passed: true },
-    { name: "Standard Section Headers", passed: false },
-    { name: "Contact Info Detected", passed: true },
-    { name: "No Special Characters", passed: false },
-    { name: "Simple Formatting", passed: true },
-    { name: "No Columns", passed: true }
-  ]);
-  
+  const [jobDescription, setJobDescription] = useState('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisResult, setAnalysisResult] = useState<ATSAnalysis | null>(null);
+
   const handleResumeUpload = (file: File | null) => {
     setFile(file);
-    
-    if (!file) {
-      setHasAnalyzed(false);
-    }
+    // Reset analysis when new file is uploaded
+    setAnalysisResult(null);
   };
-  
-  const handleCheck = () => {
+
+  const handleAnalyze = () => {
     if (!file) {
       toast({
-        title: "No file selected",
-        description: "Please upload a resume file first.",
-        variant: "destructive"
+        title: "Missing resume",
+        description: "Please upload your resume first.",
+        variant: "destructive",
       });
       return;
     }
-    
-    setIsAnalyzing(true);
-    
-    // Generate random analysis based on file name
-    const generateRandomAnalysis = () => {
-      const seed = file.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-      const rng = () => {
-        const x = Math.sin(seed++) * 10000;
-        return x - Math.floor(x);
-      };
-      
-      // Generate score between 45-95 for more varied results
-      const score = Math.floor(45 + rng() * 51);
-      
-      // Generate random checks
-      const checks = [
-        { name: "Parsable Format", passed: rng() > 0.1 }, // 90% chance to pass
-        { name: "No Images", passed: rng() > 0.2 }, // 80% chance to pass
-        { name: "No Tables", passed: rng() > 0.3 }, // 70% chance to pass
-        { name: "Standard Section Headers", passed: rng() > 0.4 }, // 60% chance to pass
-        { name: "Contact Info Detected", passed: rng() > 0.2 }, // 80% chance to pass
-        { name: "No Special Characters", passed: rng() > 0.5 }, // 50% chance to pass
-        { name: "Simple Formatting", passed: rng() > 0.3 }, // 70% chance to pass
-        { name: "No Columns", passed: rng() > 0.25 } // 75% chance to pass
-      ];
-      
-      return { score, checks };
-    };
-    
-    // Simulate API call delay
-    setTimeout(() => {
-      const analysis = generateRandomAnalysis();
-      setAtsScore(analysis.score);
-      setAtsChecks(analysis.checks);
-      setIsAnalyzing(false);
-      setHasAnalyzed(true);
+
+    if (!jobDescription.trim()) {
       toast({
-        title: "ATS Check Complete",
-        description: `Your resume scored ${analysis.score}/100 on ATS compatibility.`,
+        title: "Missing job description",
+        description: "Please enter the job description to check against.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsAnalyzing(true);
+
+    // Mock API call - Generate pseudorandom but deterministic results based on inputs
+    let seedValue = (file.name + jobDescription).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const rng = () => {
+      const x = Math.sin(seedValue++) * 10000;
+      return x - Math.floor(x);
+    };
+
+    // Extract potential keywords from job description
+    const words = jobDescription.toLowerCase().match(/\b\w{4,}\b/g) || [];
+    const uniqueWords = [...new Set(words)];
+    const keywords = uniqueWords
+      .filter(word => !['with', 'that', 'this', 'have', 'from', 'will', 'about', 'what'].includes(word))
+      .sort(() => rng() - 0.5)
+      .slice(0, 12);
+
+    // Select random matched and missing keywords
+    const matchedCount = Math.floor(3 + rng() * (keywords.length - 3));
+    const matched = keywords.slice(0, matchedCount);
+    const missing = keywords.slice(matchedCount);
+
+    // Generate random scores
+    const score = Math.floor(50 + rng() * 50);
+    const compatibility = Math.floor(40 + rng() * 60);
+    const readability = Math.floor(60 + rng() * 40);
+
+    // Generate recommendations based on scores
+    const recommendations: ATSRecommendation[] = [];
+
+    if (score < 70) {
+      recommendations.push({
+        type: 'warning',
+        message: 'Your resume may be filtered out by ATS. Consider addressing the recommendations below.',
+      });
+    } else {
+      recommendations.push({
+        type: 'success',
+        message: 'Your resume is likely to pass initial ATS screening.',
+      });
+    }
+
+    if (missing.length > 3) {
+      recommendations.push({
+        type: 'warning',
+        message: `Add more relevant keywords like: ${missing.slice(0, 3).join(', ')}`,
+      });
+    }
+
+    if (readability < 80) {
+      recommendations.push({
+        type: 'info',
+        message: 'Improve readability by using shorter sentences and bullet points.',
+      });
+    }
+
+    // Random format issues
+    const formatIssues = [];
+    if (rng() > 0.7) formatIssues.push('Complex formatting may not be parsed correctly by ATS');
+    if (rng() > 0.7) formatIssues.push('Tables or columns detected that might confuse ATS');
+    if (rng() > 0.8) formatIssues.push('Headers or footers may not be correctly processed');
+
+    setTimeout(() => {
+      setAnalysisResult({
+        score,
+        compatibility,
+        readability,
+        keywords: {
+          matched,
+          missing,
+        },
+        recommendations,
+        format: {
+          isValid: formatIssues.length === 0,
+          issues: formatIssues,
+        },
+      });
+      
+      setIsAnalyzing(false);
+      
+      toast({
+        title: "Analysis Complete",
+        description: `Your resume scored ${score}/100 for ATS compatibility.`,
       });
     }, 1500);
   };
 
-  const getScoreColor = (score: number) => {
-    if (score >= 80) return "bg-green-500";
-    if (score >= 60) return "bg-amber-500";
-    return "bg-red-500";
-  };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-background/80 relative overflow-hidden">
+    <div className="min-h-screen dark bg-gradient-neon relative overflow-hidden">
       {/* Neon light effects */}
       <div className="fixed top-1/4 -left-36 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
       <div className="fixed top-3/4 -right-36 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
@@ -111,209 +161,166 @@ export default function ATSCheck() {
       <AppNav />
       
       <main className="container mx-auto px-4 py-6 relative z-10">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold neon-text-purple">ATS Compatibility Check</h1>
-        </div>
-        
-        {/* Upload Section */}
-        <Card className="mb-6 animate-on-tap">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Upload your resume for ATS compatibility check</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResumeUploader onUpload={handleResumeUpload} />
-            
-            <div className="flex justify-end mt-4">
-              <Button 
-                onClick={handleCheck}
-                className="bg-brand-purple hover:bg-brand-purpleDark neon-glow animate-on-tap"
-                disabled={isAnalyzing || !file}
-              >
-                {isAnalyzing ? (
-                  <>
-                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                    Checking...
-                  </>
-                ) : (
-                  <>
-                    <CheckSquare className="h-4 w-4 mr-2" />
-                    Check ATS Compatibility
-                  </>
-                )}
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-        
-        {hasAnalyzed && !isAnalyzing && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* ATS Score card */}
-            <div className="md:col-span-1">
-              <Card className="animate-on-tap">
-                <CardContent className="p-6 flex flex-col items-center justify-center">
-                  <h2 className="text-xl font-semibold mb-6 neon-text-purple">ATS Score</h2>
-                  
-                  <div className="w-48 h-48 relative mb-6 flex items-center justify-center">
-                    <svg className="w-full h-full" viewBox="0 0 100 100">
-                      <circle 
-                        cx="50" cy="50" r="45" 
-                        fill="none" 
-                        stroke="#e6e6e6" 
-                        strokeWidth="10" 
-                      />
-                      <circle 
-                        cx="50" cy="50" r="45" 
-                        fill="none" 
-                        stroke={atsScore >= 80 ? "#22c55e" : atsScore >= 60 ? "#f59e0b" : "#ef4444"} 
-                        strokeWidth="10" 
-                        strokeDasharray={`${atsScore * 2.83} ${283 - atsScore * 2.83}`} 
-                        strokeDashoffset="70.75" 
-                        className="neon-glow"
-                      />
-                    </svg>
-                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-                      <span className="text-4xl font-bold neon-text-blue">{atsScore}</span>
-                      <span className="text-xl">/100</span>
-                    </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Left column - Inputs */}
+          <div>
+            <Card className="mb-6 animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
+              <CardHeader>
+                <CardTitle className="gradient-text">ATS Compatibility Check</CardTitle>
+                <CardDescription>
+                  Check if your resume will pass through Applicant Tracking Systems
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-lg font-medium mb-2">1. Upload your resume</h3>
+                    <ResumeUploader onUpload={handleResumeUpload} />
                   </div>
                   
-                  <Badge className={`${getScoreColor(atsScore)} text-white px-3 py-1 neon-glow`}>
-                    {atsScore >= 80 ? 'Excellent' : atsScore >= 60 ? 'Good' : 'Needs Improvement'}
-                  </Badge>
-                  
-                  <div className="mt-8 w-full">
-                    <Button className="w-full animate-on-tap neon-glow">
-                      <Download className="h-4 w-4 mr-2" />
-                      Download ATS Report
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-            
-            {/* ATS Checklist */}
-            <div className="md:col-span-2">
-              <Card className="animate-on-tap">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">ATS Compatibility Checks</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {atsChecks.map((check, index) => (
-                      <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-md animate-on-tap">
-                        {check.passed ? (
-                          <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 neon-text-blue" />
-                        ) : (
-                          <XCircle className="h-5 w-5 text-red-500 mt-0.5" />
-                        )}
-                        <div>
-                          <h4 className="font-medium">{check.name}</h4>
-                          <p className="text-sm text-gray-600 mt-1">
-                            {check.passed 
-                              ? "Your resume passes this check." 
-                              : "Your resume fails this check and may need improvements."}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
+                  <div>
+                    <h3 className="text-lg font-medium mb-2">2. Paste job description</h3>
+                    <Textarea 
+                      placeholder="Paste the job description here to compare against your resume..."
+                      className="h-40 resize-none border-purple-500/30 focus:neon-border"
+                      value={jobDescription}
+                      onChange={(e) => setJobDescription(e.target.value)}
+                    />
                   </div>
                   
-                  <div className="mt-6 pt-4 border-t">
-                    <h3 className="font-medium text-lg mb-3">Recommendations</h3>
-                    
-                    <div className="space-y-3">
-                      {atsChecks.some(check => !check.passed && check.name === "Standard Section Headers") && (
-                        <div className="flex items-start gap-2 animate-on-tap">
-                          <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
-                          <div>
-                            <h4 className="font-medium">Use Standard Section Headers</h4>
-                            <p className="text-sm text-gray-600">
-                              Replace custom headers with standard ones like "Work Experience" or "Education" for better ATS parsing.
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                      
-                      {atsChecks.some(check => !check.passed && check.name === "No Special Characters") && (
-                        <div className="flex items-start gap-2 animate-on-tap">
-                          <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
-                          <div>
-                            <h4 className="font-medium">Remove Special Characters</h4>
-                            <p className="text-sm text-gray-600">
-                              Avoid using special characters like ★ and → in your resume as they may cause parsing issues.
-                            </p>
-                          </div>
-                        </div>
-                      )}
-
-                      {atsChecks.some(check => !check.passed && check.name === "No Tables") && (
-                        <div className="flex items-start gap-2 animate-on-tap">
-                          <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
-                          <div>
-                            <h4 className="font-medium">Avoid Table Layouts</h4>
-                            <p className="text-sm text-gray-600">
-                              Tables can confuse ATS systems. Use standard paragraphs and bullet points instead.
-                            </p>
-                          </div>
-                        </div>
-                      )}
-
-                      {atsChecks.some(check => !check.passed && check.name === "No Columns") && (
-                        <div className="flex items-start gap-2 animate-on-tap">
-                          <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
-                          <div>
-                            <h4 className="font-medium">Use Single-Column Layout</h4>
-                            <p className="text-sm text-gray-600">
-                              Multi-column layouts can confuse ATS systems. Stick to a single column format.
-                            </p>
-                          </div>
-                        </div>
-                      )}
-                      
-                      <div className="p-4 bg-accent/50 rounded-md mt-4 border border-accent animate-on-tap neon-border">
-                        <div className="flex items-center justify-between">
-                          <h4 className="font-medium flex items-center gap-1.5">
-                            <Lock className="h-4 w-4 text-brand-purple" />
-                            Premium Analysis
-                          </h4>
-                          <Button size="sm" variant="outline" className="animate-on-tap">Upgrade</Button>
-                        </div>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          Unlock detailed ATS optimization recommendations and our ATS-friendly resume template.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                  <Button 
+                    onClick={handleAnalyze} 
+                    disabled={isAnalyzing}
+                    className="w-full bg-brand-purple hover:bg-brand-purpleDark neon-glow animate-on-tap"
+                  >
+                    {isAnalyzing ? "Analyzing..." : "Check ATS Compatibility"}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        )}
-        
-        {isAnalyzing && (
-          <Card className="animate-on-tap">
-            <CardContent className="p-6 flex flex-col items-center justify-center">
-              <div className="animate-pulse flex flex-col items-center">
-                <CheckSquare className="h-12 w-12 text-brand-purple mb-4 neon-text-purple" />
-                <h2 className="text-xl font-semibold mb-2">Checking ATS compatibility...</h2>
-                <p className="text-muted-foreground mb-6">This will take a few moments</p>
-                <Progress value={65} className="w-64 h-2 neon-glow" />
-              </div>
-            </CardContent>
-          </Card>
-        )}
-        
-        {!isAnalyzing && !hasAnalyzed && (
-          <Card className="border-dashed border-2 animate-on-tap">
-            <CardContent className="p-12 flex flex-col items-center justify-center text-center">
-              <FileText className="h-12 w-12 text-muted-foreground mb-4" />
-              <h2 className="text-xl font-semibold mb-2">No ATS check performed yet</h2>
-              <p className="text-muted-foreground mb-6 max-w-md">
-                Upload your resume and click "Check ATS Compatibility" to see how well your resume will perform with Applicant Tracking Systems
-              </p>
-            </CardContent>
-          </Card>
-        )}
+          
+          {/* Right column - Results */}
+          <div>
+            {analysisResult ? (
+              <Card className="backdrop-blur-sm bg-card/50 neon-border animate-fade-in">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="gradient-text">ATS Analysis Results</CardTitle>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-sm text-muted-foreground">Score:</span>
+                      <Badge 
+                        className={`text-white ${
+                          analysisResult.score >= 80 ? 'bg-green-500' : 
+                          analysisResult.score >= 60 ? 'bg-yellow-500' : 'bg-red-500'
+                        }`}
+                      >
+                        {analysisResult.score}/100
+                      </Badge>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {/* Scores */}
+                  <div className="space-y-4">
+                    <div>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm">ATS Compatibility</span>
+                        <span className="text-sm">{analysisResult.compatibility}%</span>
+                      </div>
+                      <Progress value={analysisResult.compatibility} className="h-2" />
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between mb-1">
+                        <span className="text-sm">Readability</span>
+                        <span className="text-sm">{analysisResult.readability}%</span>
+                      </div>
+                      <Progress value={analysisResult.readability} className="h-2" />
+                    </div>
+                  </div>
+                  
+                  {/* Keywords */}
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium">Keywords</h4>
+                    
+                    <div className="space-y-2">
+                      <div>
+                        <h5 className="text-xs text-muted-foreground mb-1">Found in your resume:</h5>
+                        <div className="flex flex-wrap gap-2">
+                          {analysisResult.keywords.matched.map((keyword, i) => (
+                            <Badge key={i} variant="outline" className="bg-green-500/10 text-green-500 border-green-500">
+                              {keyword}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      
+                      {analysisResult.keywords.missing.length > 0 && (
+                        <div>
+                          <h5 className="text-xs text-muted-foreground mb-1">Missing keywords:</h5>
+                          <div className="flex flex-wrap gap-2">
+                            {analysisResult.keywords.missing.map((keyword, i) => (
+                              <Badge key={i} variant="outline" className="bg-red-500/10 text-red-500 border-red-500">
+                                {keyword}
+                              </Badge>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {/* Recommendations */}
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium">Recommendations</h4>
+                    
+                    <div className="space-y-2">
+                      {analysisResult.recommendations.map((rec, i) => (
+                        <div key={i} className="flex items-start gap-2 p-2 rounded-md bg-background/50">
+                          {rec.type === 'success' ? (
+                            <CircleCheck className="h-5 w-5 text-green-500 mt-0.5 shrink-0" />
+                          ) : rec.type === 'warning' ? (
+                            <AlertCircle className="h-5 w-5 text-yellow-500 mt-0.5 shrink-0" />
+                          ) : (
+                            <Info className="h-5 w-5 text-blue-500 mt-0.5 shrink-0" />
+                          )}
+                          <p className="text-sm">{rec.message}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Format Issues */}
+                  {analysisResult.format.issues.length > 0 && (
+                    <div className="space-y-2">
+                      <h4 className="text-sm font-medium">Format Issues</h4>
+                      <div className="p-3 rounded-md bg-red-500/10 border border-red-500/30">
+                        <ul className="list-disc list-inside space-y-1">
+                          {analysisResult.format.issues.map((issue, i) => (
+                            <li key={i} className="text-sm text-red-500">{issue}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="backdrop-blur-sm bg-card/50 neon-border h-full flex items-center justify-center">
+                <CardContent className="py-12 text-center">
+                  <div className="mx-auto h-20 w-20 rounded-full bg-accent flex items-center justify-center mb-4 animate-pulse">
+                    <AlertCircle className="h-10 w-10 text-muted-foreground" />
+                  </div>
+                  <h3 className="text-xl font-medium mb-2">No Analysis Results</h3>
+                  <p className="text-muted-foreground max-w-md">
+                    Upload your resume and paste a job description, then click "Check ATS Compatibility" to get your results.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
       </main>
     </div>
   );
