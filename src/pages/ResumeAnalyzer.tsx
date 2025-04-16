@@ -67,10 +67,13 @@ export default function ResumeAnalyzer() {
     
     // Generate random analysis based on file name
     const generateRandomAnalysis = () => {
-      const seed = file.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      const initialSeed = file.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      let seedValue = initialSeed;
+      
+      // Create a random number generator function that uses seedValue
       const rng = () => {
-        const x = Math.sin(seed++) * 10000;
-        return x - Math.floor(x);
+        seedValue = (seedValue * 9301 + 49297) % 233280;
+        return seedValue / 233280;
       };
       
       // Generate score between 45-95 for more varied results
