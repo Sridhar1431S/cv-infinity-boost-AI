@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import AppNav from '@/components/layout/AppNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -37,10 +36,8 @@ export default function Dashboard() {
   });
   
   useEffect(() => {
-    // Get the user's email from localStorage
     const userEmail = localStorage.getItem('userEmail') || '';
     
-    // Parse name from email if available
     if (userEmail) {
       const namePart = userEmail.split('@')[0];
       const formattedName = namePart
@@ -74,23 +71,19 @@ export default function Dashboard() {
     
     setIsAnalyzing(true);
     
-    // Generate random scores based on file name to simulate different analyses
     const generateRandomScore = () => {
-      // Use file name as a seed for pseudo-randomness
       let seedValue = file.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
       const rng = () => {
         seedValue = (seedValue * 9301 + 49297) % 233280;
         return seedValue / 233280;
       };
       
-      // Generate more varied scores
-      const overall = Math.floor(50 + rng() * 50); // 50-100 range
-      const keywords = Math.floor(4 + rng() * 7); // 4-10 range
-      const readability = Math.floor(5 + rng() * 6); // 5-10 range
-      const atsCompatibility = Math.floor(3 + rng() * 8); // 3-10 range
-      const format = Math.floor(6 + rng() * 5); // 6-10 range
+      const overall = Math.floor(50 + rng() * 50);
+      const keywords = Math.floor(4 + rng() * 7);
+      const readability = Math.floor(5 + rng() * 6);
+      const atsCompatibility = Math.floor(3 + rng() * 8);
+      const format = Math.floor(6 + rng() * 5);
       
-      // Random sections presence
       return {
         overall,
         keywords,
@@ -98,16 +91,15 @@ export default function Dashboard() {
         atsCompatibility,
         format,
         sections: {
-          contact: rng() > 0.1, // 90% chance true
-          summary: rng() > 0.3, // 70% chance true
-          experience: rng() > 0.2, // 80% chance true
-          education: rng() > 0.2, // 80% chance true
-          skills: rng() > 0.4, // 60% chance true
+          contact: rng() > 0.1,
+          summary: rng() > 0.3,
+          experience: rng() > 0.2,
+          education: rng() > 0.2,
+          skills: rng() > 0.4,
         }
       };
     };
     
-    // Simulate API call delay
     setTimeout(() => {
       const newScore = generateRandomScore();
       setResumeScore(newScore);
@@ -132,20 +124,17 @@ export default function Dashboard() {
     
     setIsAnalyzing(true);
     
-    // Generate random score based on file name and job description
     let seedVal = (file.name + text).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const rng = () => {
       const x = Math.sin(seedVal++) * 10000;
       return x - Math.floor(x);
     };
     
-    const jobMatchScore = Math.floor(40 + rng() * 60); // 40-100 range
-    const keywordMatchScore = Math.floor(3 + rng() * 8); // 3-10 range
+    const jobMatchScore = Math.floor(40 + rng() * 60);
+    const keywordMatchScore = Math.floor(3 + rng() * 8);
     
-    // Simulate API call delay
     setTimeout(() => {
       setIsAnalyzing(false);
-      // Update the score based on job description and file
       setResumeScore(prev => ({
         ...prev,
         overall: jobMatchScore,
@@ -164,7 +153,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen dark bg-gradient-neon relative overflow-hidden">
-      {/* Neon light effects */}
       <div className="fixed top-1/4 -left-36 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
       <div className="fixed top-3/4 -right-36 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
       <div className="fixed bottom-1/3 left-1/3 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
@@ -172,7 +160,6 @@ export default function Dashboard() {
       <AppNav />
       
       <main className="container mx-auto px-4 py-6 relative z-10">
-        {/* Welcome Card */}
         <Card className="mb-6 animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -196,7 +183,6 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        {/* Resume Upload Section */}
         <Card className="mb-6 animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
           <CardHeader className="pb-2">
             <CardTitle className="text-lg text-purple-500">Analyze Your Resume</CardTitle>
@@ -226,32 +212,25 @@ export default function Dashboard() {
           </CardContent>
         </Card>
         
-        {/* Main Dashboard Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-          {/* Resume Scorecard */}
           <div className="lg:col-span-1">
             <ResumeScorecard score={resumeScore} isLoading={isAnalyzing && !hasAnalyzed} />
           </div>
           
-          {/* Keywords Suggestions */}
           <div className="lg:col-span-1">
             <KeywordSuggestions isLoading={isAnalyzing && !hasAnalyzed} />
           </div>
           
-          {/* Job Description Import */}
           <div className="lg:col-span-1">
             <JobDescriptionImport onAnalyze={handleJobDescriptionAnalyze} />
           </div>
         </div>
         
-        {/* Bottom Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* History Timeline - Takes 2/3 of space on larger screens */}
           <div className="md:col-span-2">
             <VersionHistory isLoading={isAnalyzing && !hasAnalyzed} />
           </div>
           
-          {/* Premium Features */}
           <div className="md:col-span-1">
             <PremiumFeatures />
           </div>

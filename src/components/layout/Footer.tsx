@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="flex flex-col items-center md:items-start">
-            <h3 className="text-lg font-semibold text-purple-500 mb-2">Resume Optimizer</h3>
+            <h3 className="text-lg font-semibold text-purple-500 mb-2">CVInfinityBoost</h3>
             <p className="text-sm text-muted-foreground text-center md:text-left">
               Elevate your job search with AI-powered resume tools.
             </p>
@@ -47,13 +47,13 @@ export default function Footer() {
         
         <div className="flex flex-col sm:flex-row items-center justify-between mt-6 pt-6 border-t border-white/10 gap-4">
           <p className="text-xs text-muted-foreground order-2 sm:order-1">
-            © 2025 Resume Optimizer. All rights reserved.
+            © 2025 CVInfinityBoost. All rights reserved.
           </p>
           <div className="flex items-center gap-4 text-xs text-muted-foreground order-1 sm:order-2">
             <a href="#" className="hover:text-white">Privacy</a>
             <a href="#" className="hover:text-white">Terms</a>
             <a href="#" className="hover:text-white flex items-center gap-1">
-              <span>Made with</span> <Heart className="h-3 w-3 text-red-500 fill-red-500" /> <span>by Resume Optimizer</span>
+              <span>Made with</span> <Heart className="h-3 w-3 text-red-500 fill-red-500" /> <span>by CVInfinityBoost</span>
             </a>
           </div>
         </div>
