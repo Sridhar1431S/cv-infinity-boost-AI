@@ -1,4 +1,4 @@
-💼 CV Infinity Boost AI
+💼 ##CV Infinity Boost AI
 
 🚀 Empower your job applications with the intelligence of AI!CV Infinity Boost AI is your smart resume optimizer that analyzes, enhances, and perfects your CV — all with a few clicks.
 
