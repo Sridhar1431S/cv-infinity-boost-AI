@@ -34,14 +34,17 @@ export default function AppNav() {
   ];
 
   return (
-    <header className="bg-white shadow-sm sticky top-0 z-40">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-8" aria-label="Global">
+    <header className="sticky top-0 z-40 px-3 pt-3">
+      <nav
+        className="mx-auto flex max-w-7xl items-center justify-between rounded-2xl border border-white/[0.08] bg-background/60 backdrop-blur-xl px-4 py-2.5 lg:px-6 shadow-[0_8px_30px_-10px_hsl(225_60%_2%/0.6)]"
+        aria-label="Global"
+      >
         <div className="flex items-center gap-x-3">
           <Link to="/dashboard" className="flex items-center gap-x-2">
-            <div className="h-8 w-8 rounded-full gradient-bg flex items-center justify-center">
+            <div className="h-9 w-9 rounded-xl gradient-bg flex items-center justify-center shadow-[0_0_20px_-4px_hsl(var(--primary)/0.6)]">
               <span className="text-white font-bold">CV</span>
             </div>
-            <p className="text-xl font-semibold bg-gradient-to-r from-brand-purple to-brand-blue bg-clip-text text-transparent">
+            <p className="text-lg font-semibold font-display gradient-text">
               CVInfinityBoost
             </p>
           </Link>
@@ -51,7 +54,7 @@ export default function AppNav() {
         <div className="flex lg:hidden">
           <button
             type="button"
-            className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+            className="-m-2.5 inline-flex items-center justify-center rounded-lg p-2.5 text-foreground/80 hover:text-foreground hover:bg-white/[0.06] transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             <span className="sr-only">Open main menu</span>
@@ -64,16 +67,16 @@ export default function AppNav() {
         </div>
         
         {/* Desktop navigation */}
-        <div className="hidden lg:flex lg:gap-x-3">
+        <div className="hidden lg:flex lg:gap-x-1">
           {navItems.map((item) => (
             <Link
               key={item.name}
               to={item.to}
               className={cn(
-                "flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-md",
+                "relative flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200",
                 location.pathname === item.to
-                  ? "text-brand-purple bg-accent"
-                  : "text-muted-foreground hover:text-brand-purple hover:bg-accent/50"
+                  ? "text-foreground bg-white/[0.07] shadow-[inset_0_0_0_1px_hsl(var(--primary)/0.25),0_0_20px_-8px_hsl(var(--primary)/0.5)]"
+                  : "text-muted-foreground hover:text-foreground hover:bg-white/[0.04]"
               )}
             >
               {item.icon}
@@ -86,20 +89,20 @@ export default function AppNav() {
       {/* Mobile menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden">
-          <div className="fixed inset-0 z-50"></div>
-          <div className="fixed inset-y-0 right-0 z-50 w-full bg-white px-6 py-4 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div className="fixed inset-0 z-50 bg-background/60 backdrop-blur-sm" onClick={() => setMobileMenuOpen(false)}></div>
+          <div className="fixed inset-y-0 right-0 z-50 w-full bg-background/95 backdrop-blur-xl border-l border-white/[0.08] px-6 py-4 sm:max-w-sm">
             <div className="flex items-center justify-between">
               <Link to="/dashboard" className="flex items-center gap-x-2" onClick={() => setMobileMenuOpen(false)}>
-                <div className="h-8 w-8 rounded-full gradient-bg flex items-center justify-center">
+                <div className="h-9 w-9 rounded-xl gradient-bg flex items-center justify-center">
                   <span className="text-white font-bold">CV</span>
                 </div>
-                <span className="text-xl font-semibold bg-gradient-to-r from-brand-purple to-brand-blue bg-clip-text text-transparent">
+                <span className="text-lg font-semibold font-display gradient-text">
                   CVInfinityBoost
                 </span>
               </Link>
               <button
                 type="button"
-                className="-m-2.5 rounded-md p-2.5 text-gray-700"
+                className="-m-2.5 rounded-lg p-2.5 text-foreground/80 hover:text-foreground hover:bg-white/[0.06]"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <span className="sr-only">Close menu</span>
@@ -113,10 +116,10 @@ export default function AppNav() {
                     key={item.name}
                     to={item.to}
                     className={cn(
-                      "flex items-center gap-2 -mx-3 rounded-lg px-3 py-2 text-base font-semibold",
+                      "flex items-center gap-2 -mx-3 rounded-lg px-3 py-2.5 text-base font-medium transition-colors",
                       location.pathname === item.to
-                        ? "text-brand-purple bg-accent"
-                        : "text-gray-900 hover:bg-gray-50"
+                        ? "text-foreground bg-white/[0.07] shadow-[inset_0_0_0_1px_hsl(var(--primary)/0.25)]"
+                        : "text-muted-foreground hover:text-foreground hover:bg-white/[0.04]"
                     )}
                     onClick={() => setMobileMenuOpen(false)}
                   >
