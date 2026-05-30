@@ -63,28 +63,29 @@ export default function Login() {
   };
   
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-background/80 relative overflow-hidden px-4 py-12 sm:px-6 lg:px-8">
-      {/* Neon light effects */}
-      <div className="fixed top-1/4 -left-36 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="fixed top-3/4 -right-36 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="fixed bottom-1/3 left-1/3 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 py-12 sm:px-6 lg:px-8">
+      <div className="fixed inset-0 bg-grid pointer-events-none opacity-40" />
+      <div className="fixed top-1/4 -left-40 w-[28rem] h-[28rem] rounded-full blur-3xl pointer-events-none animate-pulse-slow" style={{ background: 'hsl(var(--primary) / 0.2)' }} />
+      <div className="fixed bottom-1/4 -right-40 w-[28rem] h-[28rem] rounded-full blur-3xl pointer-events-none animate-pulse-slow" style={{ background: 'hsl(var(--accent) / 0.2)' }} />
 
       <div className="w-full max-w-md space-y-8 relative z-10">
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 rounded-full gradient-bg flex items-center justify-center">
+          <div className="mx-auto h-14 w-14 rounded-2xl gradient-bg flex items-center justify-center shadow-[0_0_40px_-8px_hsl(var(--primary)/0.6)] animate-glow">
             <span className="text-white text-xl font-bold">CV</span>
           </div>
-          <h2 className="mt-6 text-3xl font-extrabold bg-gradient-to-r from-brand-purple to-brand-blue bg-clip-text text-transparent">
+          <h2 className="mt-6 text-4xl font-bold font-display tracking-tight gradient-text">
             CVInfinityBoost
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
+          <p className="mt-3 text-sm text-muted-foreground">
             Optimize your resume with AI and land your dream job
           </p>
         </div>
 
-        <Card className="animate-on-tap">
+        <Card>
           <CardHeader>
-            <CardTitle>{isLogin ? "Sign in to your account" : "Create an account"}</CardTitle>
+            <CardTitle className="font-display text-2xl">
+              {isLogin ? "Sign in to your account" : "Create an account"}
+            </CardTitle>
             <CardDescription>
               {isLogin 
                 ? "Enter your email to access your dashboard" 
@@ -116,17 +117,18 @@ export default function Login() {
               </div>
             </CardContent>
             <CardFooter className="flex flex-col space-y-3">
-              <Button 
-                type="submit" 
-                className="w-full bg-brand-purple hover:bg-brand-purpleDark"
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full"
                 disabled={isLoading}
               >
                 {isLoading ? "Processing..." : (isLogin ? "Sign in" : "Create account")}
               </Button>
-              <Button 
+              <Button
                 type="button"
                 variant="link"
-                className="text-sm text-gray-600"
+                className="text-sm text-muted-foreground hover:text-primary"
                 onClick={() => setIsLogin(!isLogin)}
               >
                 {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
