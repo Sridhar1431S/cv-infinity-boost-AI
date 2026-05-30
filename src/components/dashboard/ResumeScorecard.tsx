@@ -85,10 +85,10 @@ export default function ResumeScorecard({ score = defaultScore, isLoading = fals
       <CardContent>
         {isLoading ? (
           <div className="space-y-4 animate-pulse">
-            <div className="h-4 bg-gray-200 rounded"></div>
-            <div className="h-4 bg-gray-200 rounded"></div>
-            <div className="h-4 bg-gray-200 rounded"></div>
-            <div className="h-4 bg-gray-200 rounded"></div>
+            <div className="h-4 bg-white/[0.05]/[0.06] rounded"></div>
+            <div className="h-4 bg-white/[0.05]/[0.06] rounded"></div>
+            <div className="h-4 bg-white/[0.05]/[0.06] rounded"></div>
+            <div className="h-4 bg-white/[0.05]/[0.06] rounded"></div>
           </div>
         ) : (
           <>

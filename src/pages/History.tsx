@@ -113,7 +113,7 @@ export default function History() {
           <h1 className="text-2xl font-bold text-purple-500">Resume History</h1>
           <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
             <div className="relative flex-grow">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search resumes..."
                 value={searchTerm}

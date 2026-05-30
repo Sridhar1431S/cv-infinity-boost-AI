@@ -65,11 +65,20 @@ export default {
 				},
 				brand: {
 					purple: '#8B5CF6',
-					purpleLight: '#9b87f5',
-					purpleDark: '#7E69AB',
-					blue: '#33C3F0',
-					blueDark: '#1EAEDB',
-				}
+					purpleLight: '#A78BFA',
+					purpleDark: '#7C3AED',
+					blue: '#4F7CFF',
+					blueDark: '#3B5BD9',
+					cyan: '#06B6D4',
+					emerald: '#10B981',
+				},
+				cyan: { DEFAULT: 'hsl(var(--cyan))' },
+				success: { DEFAULT: 'hsl(var(--success))' },
+				warning: { DEFAULT: 'hsl(var(--warning))' },
+			},
+			fontFamily: {
+				sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+				display: ['"Space Grotesk"', '"DM Sans"', 'system-ui', 'sans-serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

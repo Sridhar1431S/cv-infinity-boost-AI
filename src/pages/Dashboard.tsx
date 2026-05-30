@@ -153,30 +153,37 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen dark bg-gradient-neon relative overflow-hidden">
-      {/* Background effects */}
-      <div className="fixed top-1/4 -left-36 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="fixed top-3/4 -right-36 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="fixed bottom-1/3 left-1/3 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      
+    <div className="min-h-screen dark relative overflow-hidden flex flex-col">
+      {/* Ambient background */}
+      <div className="fixed inset-0 bg-grid pointer-events-none opacity-40" />
+      <div className="fixed top-1/4 -left-40 w-[28rem] h-[28rem] rounded-full blur-3xl pointer-events-none animate-pulse-slow" style={{ background: 'hsl(var(--primary) / 0.18)' }} />
+      <div className="fixed top-2/3 -right-40 w-[28rem] h-[28rem] rounded-full blur-3xl pointer-events-none animate-pulse-slow" style={{ background: 'hsl(var(--accent) / 0.16)' }} />
+      <div className="fixed bottom-0 left-1/3 w-[22rem] h-[22rem] rounded-full blur-3xl pointer-events-none animate-pulse-slow" style={{ background: 'hsl(var(--cyan) / 0.12)' }} />
+
       <AppNav />
-      
-      <main className="container mx-auto px-4 py-6 relative z-10 max-w-5xl">
+
+      <main className="container mx-auto px-4 sm:px-6 py-8 sm:py-10 relative z-10 max-w-6xl flex-1">
         {/* Welcome Card */}
-        <Card className="mb-6 animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
-          <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <Card className="mb-8 overflow-hidden">
+          <CardContent className="p-6 sm:p-8 relative">
+            <div className="absolute inset-0 gradient-bg-soft pointer-events-none" />
+            <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-2xl font-bold mb-2 text-purple-500">Welcome, {userName}</h1>
-                <p className="text-muted-foreground">
-                  Let's optimize your resume and boost your career opportunities
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-white/[0.06] border border-white/[0.08] text-muted-foreground mb-3">
+                  <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
+                  AI assistant ready
+                </div>
+                <h1 className="text-3xl sm:text-4xl font-bold font-display tracking-tight mb-2">
+                  Welcome back, <span className="gradient-text">{userName}</span>
+                </h1>
+                <p className="text-muted-foreground text-base">
+                  Let's optimize your resume and boost your career opportunities.
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <Button 
+                <Button
                   variant="outline"
                   onClick={() => navigate('/history')}
-                  className="animate-on-tap"
                 >
                   <History className="h-4 w-4 mr-2" />
                   View History
@@ -187,18 +194,18 @@ export default function Dashboard() {
         </Card>
 
         {/* Upload/Analysis Card */}
-        <Card className="mb-6 animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg text-purple-500">Analyze Your Resume</CardTitle>
+        <Card className="mb-8">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-xl font-display">Analyze Your Resume</CardTitle>
           </CardHeader>
           <CardContent>
             <ResumeUploader onUpload={handleResumeUpload} />
             
-            <div className="flex justify-end mt-4">
-              <Button 
+            <div className="flex justify-end mt-6">
+              <Button
                 onClick={handleAnalyze}
-                className="bg-brand-purple hover:bg-brand-purpleDark neon-glow animate-on-tap"
                 disabled={isAnalyzing || !file}
+                size="lg"
               >
                 {isAnalyzing ? (
                   <>
@@ -217,11 +224,11 @@ export default function Dashboard() {
         </Card>
         
         {/* Main content section - stacked layout */}
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* Resume Scorecard */}
-          <Card className="w-full animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg text-purple-500">Resume Score Overview</CardTitle>
+          <Card className="w-full">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-xl font-display">Resume Score Overview</CardTitle>
             </CardHeader>
             <CardContent>
               <ResumeScorecard score={resumeScore} isLoading={isAnalyzing && !hasAnalyzed} />
@@ -229,9 +236,9 @@ export default function Dashboard() {
           </Card>
           
           {/* Keywords Suggestions */}
-          <Card className="w-full animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg text-purple-500">Keyword Suggestions</CardTitle>
+          <Card className="w-full">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-xl font-display">Keyword Suggestions</CardTitle>
             </CardHeader>
             <CardContent>
               <KeywordSuggestions isLoading={isAnalyzing && !hasAnalyzed} />
@@ -239,9 +246,9 @@ export default function Dashboard() {
           </Card>
           
           {/* Job Description Import */}
-          <Card className="w-full animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg text-purple-500">Job Description Matching</CardTitle>
+          <Card className="w-full">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-xl font-display">Job Description Matching</CardTitle>
             </CardHeader>
             <CardContent>
               <JobDescriptionImport onAnalyze={handleJobDescriptionAnalyze} />
@@ -249,9 +256,9 @@ export default function Dashboard() {
           </Card>
           
           {/* Version History */}
-          <Card className="w-full animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg text-purple-500">Version History</CardTitle>
+          <Card className="w-full">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-xl font-display">Version History</CardTitle>
             </CardHeader>
             <CardContent>
               <VersionHistory isLoading={isAnalyzing && !hasAnalyzed} />
@@ -259,9 +266,9 @@ export default function Dashboard() {
           </Card>
           
           {/* Premium Features */}
-          <Card className="w-full animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg text-purple-500">Premium Features</CardTitle>
+          <Card className="w-full">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-xl font-display">Premium Features</CardTitle>
             </CardHeader>
             <CardContent>
               <PremiumFeatures />

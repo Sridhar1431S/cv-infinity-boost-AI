@@ -50,7 +50,7 @@ export default function KeywordSuggestions({ keywords, isLoading = false }: Keyw
       case 'good':
         return "bg-green-100 text-green-800";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-white/[0.05]/[0.05] text-foreground";
     }
   };
 
@@ -62,15 +62,15 @@ export default function KeywordSuggestions({ keywords, isLoading = false }: Keyw
       <CardContent>
         {isLoading ? (
           <div className="space-y-4 animate-pulse">
-            <div className="h-14 bg-gray-200 rounded"></div>
-            <div className="h-14 bg-gray-200 rounded"></div>
-            <div className="h-14 bg-gray-200 rounded"></div>
+            <div className="h-14 bg-white/[0.05]/[0.06] rounded"></div>
+            <div className="h-14 bg-white/[0.05]/[0.06] rounded"></div>
+            <div className="h-14 bg-white/[0.05]/[0.06] rounded"></div>
           </div>
         ) : (
           <div className="space-y-3">
             {keywordsToShow.length > 0 ? (
               keywordsToShow.map((keyword, index) => (
-                <div key={index} className="rounded-md bg-gray-50 p-3">
+                <div key={index} className="rounded-md bg-white/[0.05]/[0.03] p-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       {getKeywordIcon(keyword.type)}
@@ -89,7 +89,7 @@ export default function KeywordSuggestions({ keywords, isLoading = false }: Keyw
                     <div className="mt-2 text-sm">
                       <div className="flex items-start gap-2">
                         <div className="flex-1">
-                          <p className="text-gray-600">
+                          <p className="text-muted-foreground">
                             {keyword.suggestion}
                             {keyword.premium && (
                               <span className="inline-flex items-center ml-1 text-brand-purple">
