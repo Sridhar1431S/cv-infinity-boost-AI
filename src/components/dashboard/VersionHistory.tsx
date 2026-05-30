@@ -48,16 +48,16 @@ export default function VersionHistory({ versions, isLoading = false }: VersionH
       <CardContent>
         {isLoading ? (
           <div className="space-y-4 animate-pulse">
-            <div className="h-14 bg-gray-200 rounded"></div>
-            <div className="h-14 bg-gray-200 rounded"></div>
-            <div className="h-14 bg-gray-200 rounded"></div>
+            <div className="h-14 bg-white/[0.05]/[0.06] rounded"></div>
+            <div className="h-14 bg-white/[0.05]/[0.06] rounded"></div>
+            <div className="h-14 bg-white/[0.05]/[0.06] rounded"></div>
           </div>
         ) : (
           <div className="space-y-0 relative">
             {versionsToShow.length > 0 ? (
               <>
                 {/* Timeline line */}
-                <div className="absolute left-[15px] top-6 bottom-0 w-[2px] bg-gray-200"></div>
+                <div className="absolute left-[15px] top-6 bottom-0 w-[2px] bg-white/[0.05]/[0.06]"></div>
                 
                 {versionsToShow.map((version, index) => (
                   <div key={index} className={cn("flex gap-3 py-3", index !== versionsToShow.length - 1 ? "border-b" : "")}>
@@ -79,7 +79,7 @@ export default function VersionHistory({ versions, isLoading = false }: VersionH
                             +{version.score - version.previousScore}
                           </span>
                         )}
-                        <ChevronRight className="h-4 w-4 ml-auto text-gray-400" />
+                        <ChevronRight className="h-4 w-4 ml-auto text-muted-foreground" />
                       </div>
                     </div>
                   </div>

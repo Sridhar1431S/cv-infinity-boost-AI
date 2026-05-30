@@ -77,7 +77,7 @@ export default function JobMatch() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white/[0.05]/[0.03]">
       <AppNav />
       
       <main className="container mx-auto px-4 py-6">
@@ -141,7 +141,7 @@ export default function JobMatch() {
                 <div className={`text-6xl font-bold ${getMatchColor(matchScore)}`}>
                   {matchScore}%
                 </div>
-                <Badge className={`mt-2 ${getMatchBg(matchScore)} bg-opacity-50 border-0 text-gray-800`}>
+                <Badge className={`mt-2 ${getMatchBg(matchScore)} bg-opacity-50 border-0 text-foreground`}>
                   {matchScore >= 80 ? 'Excellent Match' : 
                    matchScore >= 60 ? 'Good Match' : 'Needs Improvement'}
                 </Badge>
@@ -187,7 +187,7 @@ export default function JobMatch() {
               <CardContent>
                 <div className="space-y-3">
                   {keywordMatches.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 rounded-md bg-gray-50">
+                    <div key={index} className="flex items-center justify-between p-2 rounded-md bg-white/[0.05]/[0.03]">
                       <span className="font-medium">{item.keyword}</span>
                       {item.found ? (
                         <ThumbsUp className="h-4 w-4 text-green-500" />
@@ -221,42 +221,42 @@ export default function JobMatch() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="p-3 bg-gray-50 rounded-md">
+                  <div className="p-3 bg-white/[0.05]/[0.03] rounded-md">
                     <h4 className="font-medium mb-2 flex items-center gap-2">
                       <AlertTriangle className="h-4 w-4 text-amber-500" />
                       Highlight Node.js Experience
                     </h4>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       The job requires Node.js, but your resume doesn't mention it. Add any related experience.
                     </p>
                   </div>
                   
-                  <div className="p-3 bg-gray-50 rounded-md">
+                  <div className="p-3 bg-white/[0.05]/[0.03] rounded-md">
                     <h4 className="font-medium mb-2 flex items-center gap-2">
                       <AlertTriangle className="h-4 w-4 text-amber-500" />
                       Add Cloud Experience
                     </h4>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       Mention AWS or other cloud platform experience you have in your technical skills section.
                     </p>
                   </div>
                   
-                  <div className="p-3 bg-gray-50 rounded-md">
+                  <div className="p-3 bg-white/[0.05]/[0.03] rounded-md">
                     <h4 className="font-medium mb-2 flex items-center gap-2">
                       <CheckCircle className="h-4 w-4 text-green-500" />
                       Strong Front-end Match
                     </h4>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       Your React and TypeScript experience aligns well with the job requirements.
                     </p>
                   </div>
                   
-                  <div className="p-3 bg-gray-50 rounded-md">
+                  <div className="p-3 bg-white/[0.05]/[0.03] rounded-md">
                     <h4 className="font-medium mb-2 flex items-center gap-2">
                       <AlertTriangle className="h-4 w-4 text-amber-500" />
                       Emphasize Agile Experience
                     </h4>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-muted-foreground">
                       The job mentions Agile methodology. Add this to your experience section if applicable.
                     </p>
                   </div>
