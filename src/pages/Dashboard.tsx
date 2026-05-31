@@ -224,7 +224,7 @@ export default function Dashboard() {
         </Card>
         
         {/* Main content section - stacked layout */}
-        <div className="space-y-8">
+        <div className="space-y-8 stagger">
           {/* Resume Scorecard */}
           <Card className="w-full">
             <CardHeader className="pb-3">
