@@ -61,10 +61,18 @@ export default function KeywordSuggestions({ keywords, isLoading = false }: Keyw
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <div className="space-y-4 animate-pulse">
-            <div className="h-14 bg-white/[0.05]/[0.06] rounded"></div>
-            <div className="h-14 bg-white/[0.05]/[0.06] rounded"></div>
-            <div className="h-14 bg-white/[0.05]/[0.06] rounded"></div>
+          <div className="space-y-3">
+            <div className="flex flex-wrap gap-2">
+              {[72, 96, 56, 84, 64, 110, 70, 90].map((w, i) => (
+                <div key={i} className="h-7 skeleton-shimmer rounded-full" style={{ width: w }} />
+              ))}
+            </div>
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="rounded-md p-3 border border-white/[0.06] space-y-2">
+                <div className="h-4 w-1/3 skeleton-shimmer" />
+                <div className="h-3 w-5/6 skeleton-shimmer" />
+              </div>
+            ))}
           </div>
         ) : (
           <div className="space-y-3">

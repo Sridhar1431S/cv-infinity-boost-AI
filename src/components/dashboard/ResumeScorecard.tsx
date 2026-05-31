@@ -84,11 +84,28 @@ export default function ResumeScorecard({ score = defaultScore, isLoading = fals
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <div className="space-y-4 animate-pulse">
-            <div className="h-4 bg-white/[0.05]/[0.06] rounded"></div>
-            <div className="h-4 bg-white/[0.05]/[0.06] rounded"></div>
-            <div className="h-4 bg-white/[0.05]/[0.06] rounded"></div>
-            <div className="h-4 bg-white/[0.05]/[0.06] rounded"></div>
+          <div className="space-y-4">
+            <div className="flex items-center gap-4">
+              <div className="h-16 w-16 rounded-full skeleton-shimmer" />
+              <div className="flex-1 space-y-2">
+                <div className="h-3 w-1/3 skeleton-shimmer" />
+                <div className="h-2 w-2/3 skeleton-shimmer" />
+              </div>
+            </div>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="space-y-2">
+                <div className="flex justify-between">
+                  <div className="h-3 w-32 skeleton-shimmer" />
+                  <div className="h-3 w-10 skeleton-shimmer" />
+                </div>
+                <div className="h-1.5 w-full skeleton-shimmer" />
+              </div>
+            ))}
+            <div className="grid grid-cols-2 gap-2 pt-2">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="h-4 w-3/4 skeleton-shimmer" />
+              ))}
+            </div>
           </div>
         ) : (
           <>

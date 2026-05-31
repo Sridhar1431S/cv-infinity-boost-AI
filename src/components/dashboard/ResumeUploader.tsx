@@ -1,5 +1,5 @@
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { FileUp, Upload, File, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -9,6 +9,7 @@ export default function ResumeUploader({ onUpload }: { onUpload?: (file: File | 
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const { toast } = useToast();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -132,18 +133,29 @@ export default function ResumeUploader({ onUpload }: { onUpload?: (file: File | 
                   Supports PDF, DOC, DOCX (Max 5MB)
                 </p>
               </div>
-              <label className="cursor-pointer mt-2 w-full flex justify-center">
+              <div className="mt-2 w-full flex justify-center">
                 <input
+                  ref={inputRef}
                   type="file"
                   className="hidden"
                   accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                   onChange={handleFileChange}
                 />
-                <Button type="button" variant="outline" className="animate-on-tap neon-glow">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="animate-on-tap neon-glow"
+                  onClick={() => {
+                    if (inputRef.current) {
+                      inputRef.current.value = '';
+                      inputRef.current.click();
+                    }
+                  }}
+                >
                   <Upload className="h-4 w-4 mr-2" />
                   Select File
                 </Button>
-              </label>
+              </div>
             </>
           )}
         </div>
