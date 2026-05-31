@@ -314,6 +314,9 @@
                 border-color 260ms ease;
     will-change: transform;
   }
+  .tilt-card:hover {
+    transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-6px);
+  }
   .glow-card { position: relative; overflow: hidden; }
   .card-glow {
     position: absolute;
