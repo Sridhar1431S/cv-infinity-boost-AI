@@ -13,10 +13,12 @@ import { RefreshCw, FileText, History } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import Footer from '@/components/layout/Footer';
 import { useNavigate } from 'react-router-dom';
+import { useScrollReveal } from '@/hooks/use-scroll-reveal';
 
 export default function Dashboard() {
   const { toast } = useToast();
   const navigate = useNavigate();
+  useScrollReveal('.reveal');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [hasAnalyzed, setHasAnalyzed] = useState(false);
   const [file, setFile] = useState<File | null>(null);
@@ -164,7 +166,7 @@ export default function Dashboard() {
 
       <main className="container mx-auto px-4 sm:px-6 py-8 sm:py-10 relative z-10 max-w-6xl flex-1">
         {/* Welcome Card */}
-        <Card className="mb-8 overflow-hidden animate-fade-up">
+        <Card className="mb-8 overflow-hidden reveal" style={{ ['--i' as any]: 0 }}>
           <CardContent className="p-6 sm:p-8 relative">
             <div className="absolute inset-0 gradient-bg-soft pointer-events-none" />
             <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -194,7 +196,7 @@ export default function Dashboard() {
         </Card>
 
         {/* Upload/Analysis Card */}
-        <Card className="mb-8 animate-fade-up" style={{ animationDelay: '120ms' }}>
+        <Card className="mb-8 reveal" style={{ ['--i' as any]: 1 }}>
           <CardHeader className="pb-3">
             <CardTitle className="text-xl font-display">Analyze Your Resume</CardTitle>
           </CardHeader>
@@ -224,9 +226,9 @@ export default function Dashboard() {
         </Card>
         
         {/* Main content section - stacked layout */}
-        <div className="space-y-8 stagger">
+        <div className="space-y-8">
           {/* Resume Scorecard */}
-          <Card className="w-full">
+          <Card className="w-full reveal" style={{ ['--i' as any]: 0 }}>
             <CardHeader className="pb-3">
               <CardTitle className="text-xl font-display">Resume Score Overview</CardTitle>
             </CardHeader>
@@ -236,7 +238,7 @@ export default function Dashboard() {
           </Card>
           
           {/* Keywords Suggestions */}
-          <Card className="w-full">
+          <Card className="w-full reveal" style={{ ['--i' as any]: 1 }}>
             <CardHeader className="pb-3">
               <CardTitle className="text-xl font-display">Keyword Suggestions</CardTitle>
             </CardHeader>
@@ -246,7 +248,7 @@ export default function Dashboard() {
           </Card>
           
           {/* Job Description Import */}
-          <Card className="w-full">
+          <Card className="w-full reveal" style={{ ['--i' as any]: 2 }}>
             <CardHeader className="pb-3">
               <CardTitle className="text-xl font-display">Job Description Matching</CardTitle>
             </CardHeader>
@@ -256,7 +258,7 @@ export default function Dashboard() {
           </Card>
           
           {/* Version History */}
-          <Card className="w-full">
+          <Card className="w-full reveal" style={{ ['--i' as any]: 3 }}>
             <CardHeader className="pb-3">
               <CardTitle className="text-xl font-display">Version History</CardTitle>
             </CardHeader>
@@ -266,7 +268,7 @@ export default function Dashboard() {
           </Card>
           
           {/* Premium Features */}
-          <Card className="w-full">
+          <Card className="w-full reveal" style={{ ['--i' as any]: 4 }}>
             <CardHeader className="pb-3">
               <CardTitle className="text-xl font-display">Premium Features</CardTitle>
             </CardHeader>
