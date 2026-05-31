@@ -164,7 +164,7 @@ export default function Dashboard() {
 
       <main className="container mx-auto px-4 sm:px-6 py-8 sm:py-10 relative z-10 max-w-6xl flex-1">
         {/* Welcome Card */}
-        <Card className="mb-8 overflow-hidden">
+        <Card className="mb-8 overflow-hidden animate-fade-up">
           <CardContent className="p-6 sm:p-8 relative">
             <div className="absolute inset-0 gradient-bg-soft pointer-events-none" />
             <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -194,7 +194,7 @@ export default function Dashboard() {
         </Card>
 
         {/* Upload/Analysis Card */}
-        <Card className="mb-8">
+        <Card className="mb-8 animate-fade-up" style={{ animationDelay: '120ms' }}>
           <CardHeader className="pb-3">
             <CardTitle className="text-xl font-display">Analyze Your Resume</CardTitle>
           </CardHeader>
@@ -224,7 +224,7 @@ export default function Dashboard() {
         </Card>
         
         {/* Main content section - stacked layout */}
-        <div className="space-y-8">
+        <div className="space-y-8 stagger">
           {/* Resume Scorecard */}
           <Card className="w-full">
             <CardHeader className="pb-3">

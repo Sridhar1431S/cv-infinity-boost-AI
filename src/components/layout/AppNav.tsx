@@ -72,8 +72,9 @@ export default function AppNav() {
             <Link
               key={item.name}
               to={item.to}
+              data-active={location.pathname === item.to}
               className={cn(
-                "relative flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200",
+                "nav-link relative flex items-center gap-1.5 px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200",
                 location.pathname === item.to
                   ? "text-foreground bg-white/[0.07] shadow-[inset_0_0_0_1px_hsl(var(--primary)/0.25),0_0_20px_-8px_hsl(var(--primary)/0.5)]"
                   : "text-muted-foreground hover:text-foreground hover:bg-white/[0.04]"
