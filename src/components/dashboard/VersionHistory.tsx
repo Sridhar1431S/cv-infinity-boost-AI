@@ -47,10 +47,19 @@ export default function VersionHistory({ versions, isLoading = false }: VersionH
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <div className="space-y-4 animate-pulse">
-            <div className="h-14 bg-white/[0.05]/[0.06] rounded"></div>
-            <div className="h-14 bg-white/[0.05]/[0.06] rounded"></div>
-            <div className="h-14 bg-white/[0.05]/[0.06] rounded"></div>
+          <div className="space-y-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex gap-3">
+                <div className="h-8 w-8 rounded-full skeleton-shimmer shrink-0" />
+                <div className="flex-1 space-y-2">
+                  <div className="flex justify-between gap-2">
+                    <div className="h-3 w-1/2 skeleton-shimmer" />
+                    <div className="h-3 w-16 skeleton-shimmer" />
+                  </div>
+                  <div className="h-3 w-1/3 skeleton-shimmer" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : (
           <div className="space-y-0 relative">
