@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Lock, User, FileEdit, Linkedin } from 'lucide-react';
@@ -10,15 +9,15 @@ interface FeatureCardProps {
 }
 
 const FeatureCard = ({ title, description, icon }: FeatureCardProps) => (
-  <div className="bg-accent/50 rounded-lg p-4 border border-accent">
+  <div className="rounded-lg p-4 border border-border bg-muted/40">
     <div className="flex items-center gap-3 mb-2">
-      <div className="h-10 w-10 rounded-full bg-white/[0.05] flex items-center justify-center shadow-sm">
+      <div className="h-9 w-9 rounded-lg bg-primary/10 flex items-center justify-center">
         {icon}
       </div>
       <div>
-        <h3 className="font-medium flex items-center gap-1.5">
+        <h3 className="font-medium text-sm flex items-center gap-1.5">
           {title}
-          <Lock className="h-3.5 w-3.5 text-brand-purple" />
+          <Lock className="h-3 w-3 text-primary" />
         </h3>
       </div>
     </div>
@@ -28,31 +27,16 @@ const FeatureCard = ({ title, description, icon }: FeatureCardProps) => (
 
 export default function PremiumFeatures() {
   return (
-    <Card className="w-full shadow-sm">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-semibold">Premium Features</CardTitle>
+    <Card>
+      <CardHeader>
+        <CardTitle>Premium features</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="grid gap-3">
-          <FeatureCard
-            title="1-on-1 Expert Review"
-            description="Get personalized feedback on your resume from our career experts"
-            icon={<User className="h-5 w-5 text-brand-purple" />}
-          />
-          <FeatureCard
-            title="AI Resume Rewrite"
-            description="Let our AI rewrite your resume for better results and higher chances"
-            icon={<FileEdit className="h-5 w-5 text-brand-purple" />}
-          />
-          <FeatureCard
-            title="LinkedIn Optimization"
-            description="Optimize your LinkedIn profile to match your improved resume"
-            icon={<Linkedin className="h-5 w-5 text-brand-purple" />}
-          />
-          
-          <Button className="w-full mt-1 bg-brand-purple hover:bg-brand-purpleDark">
-            Upgrade to Premium
-          </Button>
+          <FeatureCard title="1-on-1 expert review" description="Personalized feedback from career experts." icon={<User className="h-4 w-4 text-primary" />} />
+          <FeatureCard title="AI resume rewrite" description="Let AI rewrite your resume for stronger impact." icon={<FileEdit className="h-4 w-4 text-primary" />} />
+          <FeatureCard title="LinkedIn optimization" description="Align your LinkedIn profile with your optimized resume." icon={<Linkedin className="h-4 w-4 text-primary" />} />
+          <Button className="w-full mt-1">Upgrade to premium</Button>
         </div>
       </CardContent>
     </Card>

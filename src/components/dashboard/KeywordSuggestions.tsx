@@ -50,7 +50,7 @@ export default function KeywordSuggestions({ keywords, isLoading = false }: Keyw
       case 'good':
         return "bg-green-100 text-green-800";
       default:
-        return "bg-white/[0.05]/[0.05] text-foreground";
+        return "bg-secondary text-foreground";
     }
   };
 
@@ -78,7 +78,7 @@ export default function KeywordSuggestions({ keywords, isLoading = false }: Keyw
           <div className="space-y-3">
             {keywordsToShow.length > 0 ? (
               keywordsToShow.map((keyword, index) => (
-                <div key={index} className="rounded-md bg-white/[0.05]/[0.03] p-3">
+                <div key={index} className="rounded-md bg-secondary p-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       {getKeywordIcon(keyword.type)}
@@ -100,7 +100,7 @@ export default function KeywordSuggestions({ keywords, isLoading = false }: Keyw
                           <p className="text-muted-foreground">
                             {keyword.suggestion}
                             {keyword.premium && (
-                              <span className="inline-flex items-center ml-1 text-brand-purple">
+                              <span className="inline-flex items-center ml-1 text-primary">
                                 <Lock className="h-3 w-3 mr-0.5" /> Premium
                               </span>
                             )}

@@ -66,13 +66,13 @@ export default function VersionHistory({ versions, isLoading = false }: VersionH
             {versionsToShow.length > 0 ? (
               <>
                 {/* Timeline line */}
-                <div className="absolute left-[15px] top-6 bottom-0 w-[2px] bg-white/[0.05]/[0.06]"></div>
+                <div className="absolute left-[15px] top-6 bottom-0 w-[2px] bg-secondary"></div>
                 
                 {versionsToShow.map((version, index) => (
                   <div key={index} className={cn("flex gap-3 py-3", index !== versionsToShow.length - 1 ? "border-b" : "")}>
                     <div className="relative z-10">
                       <div className="h-8 w-8 rounded-full bg-accent flex items-center justify-center">
-                        <FileText className="h-4 w-4 text-brand-purple" />
+                        <FileText className="h-4 w-4 text-primary" />
                       </div>
                     </div>
                     <div className="flex-1">

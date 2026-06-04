@@ -172,17 +172,14 @@ export default function ResumeAnalyzer() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-background/80 relative overflow-hidden">
+    <div className="min-h-screen bg-background">
       {/* Neon light effects */}
-      <div className="fixed top-1/4 -left-36 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="fixed top-3/4 -right-36 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="fixed bottom-1/3 left-1/3 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
       
       <AppNav />
       
       <main className="container mx-auto px-4 py-6 relative z-10">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold neon-text-purple">Resume Analyzer</h1>
+          <h1 className="text-2xl font-bold text-primary">Resume Analyzer</h1>
         </div>
         
         {/* Upload Section */}
@@ -196,7 +193,7 @@ export default function ResumeAnalyzer() {
             <div className="flex justify-end mt-4">
               <Button 
                 onClick={handleAnalyze}
-                className="bg-brand-purple hover:bg-brand-purpleDark neon-glow animate-on-tap"
+                className=""
                 disabled={isAnalyzing || !file}
               >
                 {isAnalyzing ? (
@@ -222,7 +219,7 @@ export default function ResumeAnalyzer() {
               <CardHeader className="pb-2">
                 <CardTitle className="text-lg flex justify-between items-center">
                   <span>Analysis Overview</span>
-                  <Badge className="ml-auto bg-brand-purple">Score: {analysisScore}/100</Badge>
+                  <Badge className="ml-auto bg-primary">Score: {analysisScore}/100</Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -466,7 +463,7 @@ export default function ResumeAnalyzer() {
           <Card>
             <CardContent className="p-6 flex flex-col items-center justify-center">
               <div className="animate-pulse flex flex-col items-center">
-                <FileText className="h-12 w-12 text-brand-purple mb-4" />
+                <FileText className="h-12 w-12 text-primary mb-4" />
                 <h2 className="text-xl font-semibold mb-2">Analyzing your resume...</h2>
                 <p className="text-muted-foreground mb-6">This will take a few moments</p>
                 <Progress value={70} className="w-64 h-2" />

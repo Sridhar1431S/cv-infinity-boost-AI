@@ -64,16 +64,14 @@ export default function Login() {
   
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden px-4 py-12 sm:px-6 lg:px-8">
-      <div className="fixed inset-0 bg-grid pointer-events-none opacity-40" />
-      <div className="fixed top-1/4 -left-40 w-[28rem] h-[28rem] rounded-full blur-3xl pointer-events-none animate-pulse-slow" style={{ background: 'hsl(var(--primary) / 0.2)' }} />
-      <div className="fixed bottom-1/4 -right-40 w-[28rem] h-[28rem] rounded-full blur-3xl pointer-events-none animate-pulse-slow" style={{ background: 'hsl(var(--accent) / 0.2)' }} />
+      <div className="fixed inset-0 bg-grid pointer-events-none opacity-50" />
 
       <div className="w-full max-w-md space-y-8 relative z-10">
         <div className="text-center">
-          <div className="mx-auto h-14 w-14 rounded-2xl gradient-bg flex items-center justify-center shadow-[0_0_40px_-8px_hsl(var(--primary)/0.6)] animate-glow">
+          <div className="mx-auto h-14 w-14 rounded-2xl bg-primary flex items-center justify-center">
             <span className="text-white text-xl font-bold">CV</span>
           </div>
-          <h2 className="mt-6 text-4xl font-bold font-display tracking-tight gradient-text">
+          <h2 className="mt-6 text-4xl font-bold font-display tracking-tight text-foreground">
             CVInfinityBoost
           </h2>
           <p className="mt-3 text-sm text-muted-foreground">

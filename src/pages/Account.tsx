@@ -57,11 +57,8 @@ export default function Account() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-background/80 relative overflow-hidden">
+    <div className="min-h-screen bg-background">
       {/* Neon light effects */}
-      <div className="fixed top-1/4 -left-36 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="fixed top-3/4 -right-36 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="fixed bottom-1/3 left-1/3 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl pointer-events-none"></div>
       
       <AppNav />
       
@@ -98,7 +95,7 @@ export default function Account() {
                     <Input id="email" value={userEmail} disabled />
                   </div>
                   <div className="flex gap-2">
-                    <Button onClick={handleSaveProfile} className="bg-brand-purple hover:bg-brand-purpleDark">Save</Button>
+                    <Button onClick={handleSaveProfile} className="">Save</Button>
                     <Button onClick={() => setIsEditing(false)} variant="outline">Cancel</Button>
                   </div>
                 </div>
@@ -106,7 +103,7 @@ export default function Account() {
                 <>
                   <h2 className="text-xl font-semibold">{fullName}</h2>
                   <p className="text-muted-foreground">{userEmail}</p>
-                  <Badge className="mt-2 bg-brand-purple">Free Plan</Badge>
+                  <Badge className="mt-2 bg-primary">Free Plan</Badge>
                   <Button 
                     onClick={() => setIsEditing(true)} 
                     variant="outline" 

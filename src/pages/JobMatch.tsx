@@ -77,7 +77,7 @@ export default function JobMatch() {
   ];
 
   return (
-    <div className="min-h-screen bg-white/[0.05]/[0.03]">
+    <div className="min-h-screen bg-background">
       <AppNav />
       
       <main className="container mx-auto px-4 py-6">
@@ -111,7 +111,7 @@ export default function JobMatch() {
                 )}
                 
                 <Button 
-                  className="ml-auto bg-brand-purple hover:bg-brand-purpleDark"
+                  className="ml-auto "
                   onClick={handleAnalyze}
                   disabled={isAnalyzing || !hasResumeUploaded}
                 >
@@ -172,7 +172,7 @@ export default function JobMatch() {
                   </div>
                 </div>
                 
-                <Button className="mt-8 w-full bg-brand-purple hover:bg-brand-purpleDark">
+                <Button className="mt-8 w-full ">
                   <Download className="h-4 w-4 mr-2" />
                   Get Tailored Resume
                 </Button>
@@ -187,7 +187,7 @@ export default function JobMatch() {
               <CardContent>
                 <div className="space-y-3">
                   {keywordMatches.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between p-2 rounded-md bg-white/[0.05]/[0.03]">
+                    <div key={index} className="flex items-center justify-between p-2 rounded-md bg-secondary">
                       <span className="font-medium">{item.keyword}</span>
                       {item.found ? (
                         <ThumbsUp className="h-4 w-4 text-green-500" />
@@ -205,7 +205,7 @@ export default function JobMatch() {
                       .filter(item => !item.found)
                       .map((item, index) => (
                         <div key={index} className="text-sm flex items-center gap-2">
-                          <ChevronRight className="h-4 w-4 text-brand-purple" />
+                          <ChevronRight className="h-4 w-4 text-primary" />
                           <span>Add "{item.keyword}" to your resume</span>
                         </div>
                     ))}
@@ -221,7 +221,7 @@ export default function JobMatch() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="p-3 bg-white/[0.05]/[0.03] rounded-md">
+                  <div className="p-3 bg-secondary rounded-md">
                     <h4 className="font-medium mb-2 flex items-center gap-2">
                       <AlertTriangle className="h-4 w-4 text-amber-500" />
                       Highlight Node.js Experience
@@ -231,7 +231,7 @@ export default function JobMatch() {
                     </p>
                   </div>
                   
-                  <div className="p-3 bg-white/[0.05]/[0.03] rounded-md">
+                  <div className="p-3 bg-secondary rounded-md">
                     <h4 className="font-medium mb-2 flex items-center gap-2">
                       <AlertTriangle className="h-4 w-4 text-amber-500" />
                       Add Cloud Experience
@@ -241,7 +241,7 @@ export default function JobMatch() {
                     </p>
                   </div>
                   
-                  <div className="p-3 bg-white/[0.05]/[0.03] rounded-md">
+                  <div className="p-3 bg-secondary rounded-md">
                     <h4 className="font-medium mb-2 flex items-center gap-2">
                       <CheckCircle className="h-4 w-4 text-green-500" />
                       Strong Front-end Match
@@ -251,7 +251,7 @@ export default function JobMatch() {
                     </p>
                   </div>
                   
-                  <div className="p-3 bg-white/[0.05]/[0.03] rounded-md">
+                  <div className="p-3 bg-secondary rounded-md">
                     <h4 className="font-medium mb-2 flex items-center gap-2">
                       <AlertTriangle className="h-4 w-4 text-amber-500" />
                       Emphasize Agile Experience
@@ -276,7 +276,7 @@ export default function JobMatch() {
           <Card>
             <CardContent className="p-6 flex flex-col items-center justify-center">
               <div className="animate-pulse flex flex-col items-center">
-                <Briefcase className="h-12 w-12 text-brand-purple mb-4" />
+                <Briefcase className="h-12 w-12 text-primary mb-4" />
                 <h2 className="text-xl font-semibold mb-2">Analyzing job match...</h2>
                 <p className="text-muted-foreground mb-6">Comparing your resume to the job description</p>
                 <Progress value={60} className="w-64 h-2" />
