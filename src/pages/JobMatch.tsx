@@ -77,7 +77,7 @@ export default function JobMatch() {
   ];
 
   return (
-    <div className="min-h-screen bg-secondary">
+    <div className="min-h-screen bg-background">
       <AppNav />
       
       <main className="container mx-auto px-4 py-6">
