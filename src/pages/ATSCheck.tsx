@@ -152,11 +152,8 @@ export default function ATSCheck() {
   };
 
   return (
-    <div className="min-h-screen dark bg-gradient-neon relative overflow-hidden">
+    <div className="min-h-screen bg-background">
       {/* Neon light effects */}
-      <div className="fixed top-1/4 -left-36 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="fixed top-3/4 -right-36 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="fixed bottom-1/3 left-1/3 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
       
       <AppNav />
       
@@ -164,7 +161,7 @@ export default function ATSCheck() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Left column - Inputs */}
           <div>
-            <Card className="mb-6 animate-on-tap backdrop-blur-sm bg-card/50 neon-border">
+            <Card className="mb-6 animate-on-tap backdrop-blur-sm bg-card/50 ">
               <CardHeader>
                 <CardTitle className="gradient-text">ATS Compatibility Check</CardTitle>
                 <CardDescription>
@@ -182,7 +179,7 @@ export default function ATSCheck() {
                     <h3 className="text-lg font-medium mb-2">2. Paste job description</h3>
                     <Textarea 
                       placeholder="Paste the job description here to compare against your resume..."
-                      className="h-40 resize-none border-purple-500/30 focus:neon-border"
+                      className="h-40 resize-none border-purple-500/30 focus:"
                       value={jobDescription}
                       onChange={(e) => setJobDescription(e.target.value)}
                     />
@@ -191,7 +188,7 @@ export default function ATSCheck() {
                   <Button 
                     onClick={handleAnalyze} 
                     disabled={isAnalyzing}
-                    className="w-full bg-brand-purple hover:bg-brand-purpleDark neon-glow animate-on-tap"
+                    className="w-full   animate-on-tap"
                   >
                     {isAnalyzing ? "Analyzing..." : "Check ATS Compatibility"}
                   </Button>
@@ -203,7 +200,7 @@ export default function ATSCheck() {
           {/* Right column - Results */}
           <div>
             {analysisResult ? (
-              <Card className="backdrop-blur-sm bg-card/50 neon-border animate-fade-in">
+              <Card className="backdrop-blur-sm bg-card/50  animate-fade-in">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="gradient-text">ATS Analysis Results</CardTitle>
@@ -307,7 +304,7 @@ export default function ATSCheck() {
                 </CardContent>
               </Card>
             ) : (
-              <Card className="backdrop-blur-sm bg-card/50 neon-border h-full flex items-center justify-center">
+              <Card className="backdrop-blur-sm bg-card/50  h-full flex items-center justify-center">
                 <CardContent className="py-12 text-center">
                   <div className="mx-auto h-20 w-20 rounded-full bg-accent flex items-center justify-center mb-4 animate-pulse">
                     <AlertCircle className="h-10 w-10 text-muted-foreground" />

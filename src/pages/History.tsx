@@ -92,7 +92,7 @@ export default function History() {
   
   const getTypeBadgeClass = (type: string) => {
     switch(type) {
-      case 'analysis': return 'bg-brand-purple';
+      case 'analysis': return 'bg-primary';
       case 'ats-check': return 'bg-blue-500';
       case 'job-match': return 'bg-green-500';
       default: return 'bg-gray-500';
@@ -100,17 +100,14 @@ export default function History() {
   };
 
   return (
-    <div className="min-h-screen dark bg-gradient-neon relative overflow-hidden">
+    <div className="min-h-screen bg-background">
       {/* Neon light effects */}
-      <div className="fixed top-1/4 -left-36 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="fixed top-3/4 -right-36 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-      <div className="fixed bottom-1/3 left-1/3 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
       
       <AppNav />
       
       <main className="container mx-auto px-4 py-6 relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-          <h1 className="text-2xl font-bold text-purple-500">Resume History</h1>
+          <h1 className="text-2xl font-bold text-foreground">Resume History</h1>
           <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
             <div className="relative flex-grow">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -151,7 +148,7 @@ export default function History() {
                     <div className="flex flex-col md:flex-row justify-between gap-4">
                       <div className="flex items-start gap-4">
                         <div className="h-12 w-12 rounded-full bg-accent flex items-center justify-center shrink-0">
-                          <FileText className="h-6 w-6 text-brand-purple" />
+                          <FileText className="h-6 w-6 text-primary" />
                         </div>
                         <div>
                           <h3 className="text-lg font-medium">{item.fileName}</h3>

@@ -47,7 +47,7 @@ export default function JobDescriptionImport({ onAnalyze }: { onAnalyze?: (text:
           />
           <div className="flex gap-2">
             <Button 
-              className="w-full bg-brand-purple hover:bg-brand-purpleDark"
+              className="w-full "
               onClick={handleAnalyze}
             >
               Match My Resume

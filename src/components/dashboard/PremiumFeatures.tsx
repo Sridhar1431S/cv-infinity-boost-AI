@@ -18,7 +18,7 @@ const FeatureCard = ({ title, description, icon }: FeatureCardProps) => (
       <div>
         <h3 className="font-medium flex items-center gap-1.5">
           {title}
-          <Lock className="h-3.5 w-3.5 text-brand-purple" />
+          <Lock className="h-3.5 w-3.5 text-primary" />
         </h3>
       </div>
     </div>
@@ -37,20 +37,20 @@ export default function PremiumFeatures() {
           <FeatureCard
             title="1-on-1 Expert Review"
             description="Get personalized feedback on your resume from our career experts"
-            icon={<User className="h-5 w-5 text-brand-purple" />}
+            icon={<User className="h-5 w-5 text-primary" />}
           />
           <FeatureCard
             title="AI Resume Rewrite"
             description="Let our AI rewrite your resume for better results and higher chances"
-            icon={<FileEdit className="h-5 w-5 text-brand-purple" />}
+            icon={<FileEdit className="h-5 w-5 text-primary" />}
           />
           <FeatureCard
             title="LinkedIn Optimization"
             description="Optimize your LinkedIn profile to match your improved resume"
-            icon={<Linkedin className="h-5 w-5 text-brand-purple" />}
+            icon={<Linkedin className="h-5 w-5 text-primary" />}
           />
           
-          <Button className="w-full mt-1 bg-brand-purple hover:bg-brand-purpleDark">
+          <Button className="w-full mt-1 ">
             Upgrade to Premium
           </Button>
         </div>

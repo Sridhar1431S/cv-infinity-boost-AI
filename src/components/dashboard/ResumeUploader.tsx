@@ -87,7 +87,7 @@ export default function ResumeUploader({ onUpload }: { onUpload?: (file: File | 
       <div 
         className={cn(
           "border-2 border-dashed rounded-lg p-6 text-center transition-all animate-on-tap",
-          isDragging ? "border-brand-purple bg-accent/50 neon-border" : "border-gray-300 hover:border-brand-purple",
+          isDragging ? "border-brand-purple bg-accent/50 " : "border-gray-300 hover:border-brand-purple",
           "animate-fade-in"
         )}
         onDragOver={handleDragOver}
@@ -97,7 +97,7 @@ export default function ResumeUploader({ onUpload }: { onUpload?: (file: File | 
         <div className="flex flex-col items-center justify-center gap-4">
           {file ? (
             <div className="flex items-center gap-3 p-3 bg-accent rounded-lg w-full max-w-md">
-              <File className="h-8 w-8 text-brand-purple neon-text-purple" />
+              <File className="h-8 w-8 text-primary text-primary" />
               <div className="flex-1 overflow-hidden">
                 <p className="text-sm font-medium truncate">{file.name}</p>
                 <p className="text-xs text-muted-foreground">{(file.size / 1024).toFixed(1)} KB</p>
@@ -113,7 +113,7 @@ export default function ResumeUploader({ onUpload }: { onUpload?: (file: File | 
                 </Button>
                 <Button 
                   onClick={handleAnalyzeClick} 
-                  className="bg-brand-purple hover:bg-brand-purpleDark neon-glow animate-on-tap"
+                  className=""
                 >
                   Analyze
                 </Button>
@@ -121,8 +121,8 @@ export default function ResumeUploader({ onUpload }: { onUpload?: (file: File | 
             </div>
           ) : (
             <>
-              <div className="h-14 w-14 rounded-full bg-accent flex items-center justify-center neon-glow">
-                <FileUp className="h-7 w-7 text-brand-purple" />
+              <div className="h-14 w-14 rounded-full bg-accent flex items-center justify-center ">
+                <FileUp className="h-7 w-7 text-primary" />
               </div>
               <div>
                 <h3 className="text-lg font-medium">Upload your resume</h3>
@@ -144,7 +144,7 @@ export default function ResumeUploader({ onUpload }: { onUpload?: (file: File | 
                 <Button
                   type="button"
                   variant="outline"
-                  className="animate-on-tap neon-glow"
+                  className="animate-on-tap "
                   onClick={() => {
                     if (inputRef.current) {
                       inputRef.current.value = '';

@@ -13,7 +13,7 @@ interface ScoreStatProps {
   icon?: React.ReactNode;
 }
 
-const ScoreStat = ({ title, score, maxScore, color = "text-brand-purple", icon }: ScoreStatProps) => (
+const ScoreStat = ({ title, score, maxScore, color = "text-primary", icon }: ScoreStatProps) => (
   <div className="flex items-center gap-2">
     <div className={cn("p-1.5 rounded-full bg-accent", color)}>
       {icon || <Circle className="h-4 w-4" />}
@@ -77,7 +77,7 @@ export default function ResumeScorecard({ score = defaultScore, isLoading = fals
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-semibold flex items-center justify-between">
           Resume Scorecard
-          <Badge className="bg-brand-purple hover:bg-brand-purpleDark ml-auto text-white">
+          <Badge className="">
             Score: {scoreData.overall}/100
           </Badge>
         </CardTitle>
