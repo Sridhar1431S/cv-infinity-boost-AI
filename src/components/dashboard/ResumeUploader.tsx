@@ -1,6 +1,5 @@
-
 import { useState, useCallback, useRef } from 'react';
-import { FileUp, Upload, File, Trash2 } from 'lucide-react';
+import { FileUp, Upload, File as FileIcon, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/components/ui/use-toast';
@@ -16,149 +15,88 @@ export default function ResumeUploader({ onUpload }: { onUpload?: (file: File | 
     setIsDragging(true);
   }, []);
 
-  const handleDragLeave = useCallback(() => {
-    setIsDragging(false);
-  }, []);
+  const handleDragLeave = useCallback(() => setIsDragging(false), []);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setIsDragging(false);
-    
     const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile && (droppedFile.type === 'application/pdf' || droppedFile.type === 'application/msword' || 
+    if (droppedFile && (droppedFile.type === 'application/pdf' ||
+        droppedFile.type === 'application/msword' ||
         droppedFile.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
       handleFileSelected(droppedFile);
     } else {
-      toast({
-        title: "Invalid file format",
-        description: "Please upload a PDF or Word document.",
-        variant: "destructive"
-      });
+      toast({ title: "Invalid file format", description: "Please upload a PDF or Word document.", variant: "destructive" });
     }
   }, [toast]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      handleFileSelected(selectedFile);
-    }
+    if (selectedFile) handleFileSelected(selectedFile);
   };
 
   const handleFileSelected = (selectedFile: File) => {
     setFile(selectedFile);
-    toast({
-      title: "Resume uploaded",
-      description: `${selectedFile.name} has been successfully uploaded.`,
-    });
-    
-    // Notify parent component immediately when a file is selected
+    toast({ title: "Resume uploaded", description: `${selectedFile.name} has been uploaded.` });
     if (onUpload) onUpload(selectedFile);
   };
 
   const handleDeleteFile = () => {
     setFile(null);
-    toast({
-      title: "File removed",
-      description: "Resume file has been removed successfully.",
-    });
-    
-    // Notify parent component that file has been deleted
+    toast({ title: "File removed", description: "Resume file removed." });
     if (onUpload) onUpload(null);
   };
 
-  const handleAnalyzeClick = () => {
-    if (file && onUpload) {
-      onUpload(file);
-      toast({
-        title: "Analysis started",
-        description: "Your resume is being analyzed. Results will appear shortly.",
-      });
-    } else {
-      toast({
-        title: "No file selected",
-        description: "Please upload a resume file first.",
-        variant: "destructive"
-      });
-    }
-  };
-
   return (
-    <div className="w-full px-4">
-      <div 
+    <div className="w-full">
+      <div
         className={cn(
-          "border-2 border-dashed rounded-lg p-6 text-center transition-all animate-on-tap",
-          isDragging ? "border-brand-purple bg-accent/50 " : "border-gray-300 hover:border-brand-purple",
-          "animate-fade-in"
+          "border-2 border-dashed rounded-xl p-8 text-center transition-all bg-muted/40",
+          isDragging ? "border-primary bg-primary/5" : "border-border hover:border-slate-300"
         )}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <div className="flex flex-col items-center justify-center gap-4">
-          {file ? (
-            <div className="flex items-center gap-3 p-3 bg-accent rounded-lg w-full max-w-md">
-              <File className="h-8 w-8 text-primary text-primary" />
-              <div className="flex-1 overflow-hidden">
-                <p className="text-sm font-medium truncate">{file.name}</p>
-                <p className="text-xs text-muted-foreground">{(file.size / 1024).toFixed(1)} KB</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <Button 
-                  onClick={handleDeleteFile}
-                  variant="outline" 
-                  size="sm"
-                  className="animate-on-tap"
-                >
-                  <Trash2 className="h-4 w-4 text-red-500" />
-                </Button>
-                <Button 
-                  onClick={handleAnalyzeClick} 
-                  className=""
-                >
-                  Analyze
-                </Button>
-              </div>
+        {file ? (
+          <div className="flex items-center gap-3 p-3 bg-card rounded-lg border border-border max-w-md mx-auto">
+            <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+              <FileIcon className="h-5 w-5 text-primary" />
             </div>
-          ) : (
-            <>
-              <div className="h-14 w-14 rounded-full bg-accent flex items-center justify-center ">
-                <FileUp className="h-7 w-7 text-primary" />
-              </div>
-              <div>
-                <h3 className="text-lg font-medium">Upload your resume</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Drag and drop your resume file, or click to select
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Supports PDF, DOC, DOCX (Max 5MB)
-                </p>
-              </div>
-              <div className="mt-2 w-full flex justify-center">
-                <input
-                  ref={inputRef}
-                  type="file"
-                  className="hidden"
-                  accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                  onChange={handleFileChange}
-                />
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="animate-on-tap "
-                  onClick={() => {
-                    if (inputRef.current) {
-                      inputRef.current.value = '';
-                      inputRef.current.click();
-                    }
-                  }}
-                >
-                  <Upload className="h-4 w-4 mr-2" />
-                  Select File
-                </Button>
-              </div>
-            </>
-          )}
-        </div>
+            <div className="flex-1 overflow-hidden text-left">
+              <p className="text-sm font-medium text-foreground truncate">{file.name}</p>
+              <p className="text-xs text-muted-foreground">{(file.size / 1024).toFixed(1)} KB</p>
+            </div>
+            <Button onClick={handleDeleteFile} variant="ghost" size="icon" aria-label="Remove file">
+              <Trash2 className="h-4 w-4 text-destructive" />
+            </Button>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center gap-3">
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
+              <FileUp className="h-6 w-6 text-primary" />
+            </div>
+            <div>
+              <h3 className="text-base font-semibold text-foreground">Upload your resume</h3>
+              <p className="text-sm text-muted-foreground mt-1">Drag and drop, or click to select</p>
+              <p className="text-xs text-muted-foreground mt-1">PDF, DOC, DOCX up to 5MB</p>
+            </div>
+            <input
+              ref={inputRef}
+              type="file"
+              className="hidden"
+              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              onChange={handleFileChange}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => { if (inputRef.current) { inputRef.current.value = ''; inputRef.current.click(); } }}
+            >
+              <Upload className="h-4 w-4" /> Select file
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
