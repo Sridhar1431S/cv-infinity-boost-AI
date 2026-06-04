@@ -1,9 +1,8 @@
-
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Briefcase, FileUp } from 'lucide-react';
+import { Briefcase } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
 export default function JobDescriptionImport({ onAnalyze }: { onAnalyze?: (text: string) => void }) {
@@ -12,47 +11,31 @@ export default function JobDescriptionImport({ onAnalyze }: { onAnalyze?: (text:
 
   const handleAnalyze = () => {
     if (!jobDescription.trim()) {
-      toast({
-        title: "Empty Job Description",
-        description: "Please paste a job description before analyzing.",
-        variant: "destructive"
-      });
+      toast({ title: "Empty job description", description: "Paste a job description first.", variant: "destructive" });
       return;
     }
-
     if (onAnalyze) {
       onAnalyze(jobDescription);
-      toast({
-        title: "Analysis started",
-        description: "Matching your resume against the job description...",
-      });
+      toast({ title: "Analysis started", description: "Matching your resume against the job description…" });
     }
   };
 
   return (
-    <Card className="w-full shadow-sm">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-semibold flex items-center gap-2">
-          <Briefcase className="h-5 w-5" />
-          Job Description Import
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Briefcase className="h-4 w-4" /> Job description matching
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
           <Textarea
-            placeholder="Paste job description here to match against your resume..."
+            placeholder="Paste the job description here to match against your resume…"
             className="min-h-[150px] resize-none"
             value={jobDescription}
             onChange={(e) => setJobDescription(e.target.value)}
           />
-          <div className="flex gap-2">
-            <Button 
-              className="w-full "
-              onClick={handleAnalyze}
-            >
-              Match My Resume
-            </Button>
-          </div>
+          <Button className="w-full" onClick={handleAnalyze}>Match my resume</Button>
         </div>
       </CardContent>
     </Card>

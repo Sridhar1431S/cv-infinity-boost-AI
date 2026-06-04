@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import AppNav from '@/components/layout/AppNav';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -24,261 +23,120 @@ export default function Dashboard() {
   const [file, setFile] = useState<File | null>(null);
   const [userName, setUserName] = useState('');
   const [resumeScore, setResumeScore] = useState<ResumeScore>({
-    overall: 75,
-    keywords: 7,
-    readability: 8,
-    atsCompatibility: 6,
-    format: 9,
-    sections: {
-      contact: true,
-      summary: true,
-      experience: true,
-      education: true,
-      skills: false,
-    }
+    overall: 75, keywords: 7, readability: 8, atsCompatibility: 6, format: 9,
+    sections: { contact: true, summary: true, experience: true, education: true, skills: false }
   });
-  
+
   useEffect(() => {
     const userEmail = localStorage.getItem('userEmail') || '';
-    
     if (userEmail) {
       const namePart = userEmail.split('@')[0];
-      const formattedName = namePart
-        .split(/[._-]/)
-        .map(part => part.charAt(0).toUpperCase() + part.slice(1))
-        .join(' ');
-      setUserName(formattedName);
+      setUserName(namePart.split(/[._-]/).map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' '));
     } else {
-      setUserName('User');
+      setUserName('there');
     }
   }, []);
-  
+
   const handleResumeUpload = (file: File | null) => {
     setFile(file);
-    
-    if (!file) {
-      setHasAnalyzed(false);
-      return;
-    }
+    if (!file) setHasAnalyzed(false);
   };
-  
+
   const handleAnalyze = () => {
     if (!file) {
-      toast({
-        title: "No file selected", 
-        description: "Please upload a resume file first.",
-        variant: "destructive"
-      });
+      toast({ title: "No file selected", description: "Please upload a resume first.", variant: "destructive" });
       return;
     }
-    
     setIsAnalyzing(true);
-    
     const generateRandomScore = () => {
       let seedValue = file.name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-      const rng = () => {
-        seedValue = (seedValue * 9301 + 49297) % 233280;
-        return seedValue / 233280;
-      };
-      
-      const overall = Math.floor(50 + rng() * 50);
-      const keywords = Math.floor(4 + rng() * 7);
-      const readability = Math.floor(5 + rng() * 6);
-      const atsCompatibility = Math.floor(3 + rng() * 8);
-      const format = Math.floor(6 + rng() * 5);
-      
+      const rng = () => { seedValue = (seedValue * 9301 + 49297) % 233280; return seedValue / 233280; };
       return {
-        overall,
-        keywords,
-        readability,
-        atsCompatibility,
-        format,
-        sections: {
-          contact: rng() > 0.1,
-          summary: rng() > 0.3,
-          experience: rng() > 0.2,
-          education: rng() > 0.2,
-          skills: rng() > 0.4,
-        }
+        overall: Math.floor(50 + rng() * 50),
+        keywords: Math.floor(4 + rng() * 7),
+        readability: Math.floor(5 + rng() * 6),
+        atsCompatibility: Math.floor(3 + rng() * 8),
+        format: Math.floor(6 + rng() * 5),
+        sections: { contact: rng() > 0.1, summary: rng() > 0.3, experience: rng() > 0.2, education: rng() > 0.2, skills: rng() > 0.4 }
       };
     };
-    
     setTimeout(() => {
       const newScore = generateRandomScore();
       setResumeScore(newScore);
       setIsAnalyzing(false);
       setHasAnalyzed(true);
-      toast({
-        title: "Analysis Complete",
-        description: `Your resume scored ${newScore.overall}/100. See results below.`,
-      });
+      toast({ title: "Analysis Complete", description: `Your resume scored ${newScore.overall}/100.` });
     }, 1500);
   };
-  
+
   const handleJobDescriptionAnalyze = (text: string) => {
     if (!file) {
-      toast({
-        title: "No resume uploaded", 
-        description: "Please upload your resume before analyzing job match.",
-        variant: "destructive"
-      });
+      toast({ title: "No resume uploaded", description: "Please upload your resume first.", variant: "destructive" });
       return;
     }
-    
     setIsAnalyzing(true);
-    
     let seedVal = (file.name + text).split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const rng = () => {
-      const x = Math.sin(seedVal++) * 10000;
-      return x - Math.floor(x);
-    };
-    
+    const rng = () => { const x = Math.sin(seedVal++) * 10000; return x - Math.floor(x); };
     const jobMatchScore = Math.floor(40 + rng() * 60);
-    const keywordMatchScore = Math.floor(3 + rng() * 8);
-    
     setTimeout(() => {
       setIsAnalyzing(false);
-      setResumeScore(prev => ({
-        ...prev,
-        overall: jobMatchScore,
-        keywords: keywordMatchScore,
-        atsCompatibility: Math.floor(3 + rng() * 8)
-      }));
-      
-      toast({
-        title: "Job Match Complete",
-        description: jobMatchScore >= 70 
-          ? "Your resume matches well with this job."
-          : "Your resume doesn't match well with this job. See suggestions.",
-      });
+      setResumeScore(prev => ({ ...prev, overall: jobMatchScore, keywords: Math.floor(3 + rng() * 8), atsCompatibility: Math.floor(3 + rng() * 8) }));
+      toast({ title: "Job Match Complete", description: jobMatchScore >= 70 ? "Strong match." : "See suggestions below." });
     }, 1500);
   };
 
   return (
-    <div className="min-h-screen dark relative overflow-hidden flex flex-col">
-      {/* Ambient background */}
-      <div className="fixed inset-0 bg-grid pointer-events-none opacity-40" />
-      <div className="fixed top-1/4 -left-40 w-[28rem] h-[28rem] rounded-full blur-3xl pointer-events-none animate-pulse-slow" style={{ background: 'hsl(var(--primary) / 0.18)' }} />
-      <div className="fixed top-2/3 -right-40 w-[28rem] h-[28rem] rounded-full blur-3xl pointer-events-none animate-pulse-slow" style={{ background: 'hsl(var(--accent) / 0.16)' }} />
-      <div className="fixed bottom-0 left-1/3 w-[22rem] h-[22rem] rounded-full blur-3xl pointer-events-none animate-pulse-slow" style={{ background: 'hsl(var(--cyan) / 0.12)' }} />
-
+    <div className="min-h-screen bg-background flex flex-col">
       <AppNav />
 
-      <main className="container mx-auto px-4 sm:px-6 py-8 sm:py-10 relative z-10 max-w-6xl flex-1">
-        {/* Welcome Card */}
-        <Card className="mb-8 overflow-hidden reveal" style={{ ['--i' as any]: 0 }}>
-          <CardContent className="p-6 sm:p-8 relative">
-            <div className="absolute inset-0 gradient-bg-soft pointer-events-none" />
-            <div className="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-white/[0.06] border border-white/[0.08] text-muted-foreground mb-3">
-                  <span className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
-                  AI assistant ready
-                </div>
-                <h1 className="text-3xl sm:text-4xl font-bold font-display tracking-tight mb-2">
-                  Welcome back, <span className="gradient-text">{userName}</span>
-                </h1>
-                <p className="text-muted-foreground text-base">
-                  Let's optimize your resume and boost your career opportunities.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => navigate('/history')}
-                >
-                  <History className="h-4 w-4 mr-2" />
-                  View History
-                </Button>
-              </div>
+      <main className="mx-auto w-full max-w-6xl px-4 sm:px-6 py-8 sm:py-10 flex-1">
+        {/* Welcome */}
+        <div className="mb-8 reveal" style={{ ['--i' as any]: 0 }}>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <p className="text-sm text-muted-foreground mb-1">Welcome back</p>
+              <h1 className="text-3xl font-bold font-display tracking-tight text-foreground">{userName}</h1>
             </div>
-          </CardContent>
-        </Card>
+            <Button variant="outline" onClick={() => navigate('/history')}>
+              <History className="h-4 w-4" /> View history
+            </Button>
+          </div>
+        </div>
 
-        {/* Upload/Analysis Card */}
+        {/* Upload */}
         <Card className="mb-8 reveal" style={{ ['--i' as any]: 1 }}>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-xl font-display">Analyze Your Resume</CardTitle>
+          <CardHeader>
+            <CardTitle>Analyze your resume</CardTitle>
           </CardHeader>
           <CardContent>
             <ResumeUploader onUpload={handleResumeUpload} />
-            
             <div className="flex justify-end mt-6">
-              <Button
-                onClick={handleAnalyze}
-                disabled={isAnalyzing || !file}
-                size="lg"
-              >
-                {isAnalyzing ? (
-                  <>
-                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
-                    Analyzing...
-                  </>
-                ) : (
-                  <>
-                    <FileText className="h-4 w-4 mr-2" />
-                    Analyze Resume
-                  </>
-                )}
+              <Button onClick={handleAnalyze} disabled={isAnalyzing || !file} size="lg">
+                {isAnalyzing ? (<><RefreshCw className="h-4 w-4 animate-spin" /> Analyzing…</>) : (<><FileText className="h-4 w-4" /> Analyze resume</>)}
               </Button>
             </div>
           </CardContent>
         </Card>
-        
-        {/* Main content section - stacked layout */}
-        <div className="space-y-8">
-          {/* Resume Scorecard */}
-          <Card className="w-full reveal" style={{ ['--i' as any]: 0 }}>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-xl font-display">Resume Score Overview</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResumeScorecard score={resumeScore} isLoading={isAnalyzing && !hasAnalyzed} />
-            </CardContent>
-          </Card>
-          
-          {/* Keywords Suggestions */}
-          <Card className="w-full reveal" style={{ ['--i' as any]: 1 }}>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-xl font-display">Keyword Suggestions</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <KeywordSuggestions isLoading={isAnalyzing && !hasAnalyzed} />
-            </CardContent>
-          </Card>
-          
-          {/* Job Description Import */}
-          <Card className="w-full reveal" style={{ ['--i' as any]: 2 }}>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-xl font-display">Job Description Matching</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <JobDescriptionImport onAnalyze={handleJobDescriptionAnalyze} />
-            </CardContent>
-          </Card>
-          
-          {/* Version History */}
-          <Card className="w-full reveal" style={{ ['--i' as any]: 3 }}>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-xl font-display">Version History</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <VersionHistory isLoading={isAnalyzing && !hasAnalyzed} />
-            </CardContent>
-          </Card>
-          
-          {/* Premium Features */}
-          <Card className="w-full reveal" style={{ ['--i' as any]: 4 }}>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-xl font-display">Premium Features</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <PremiumFeatures />
-            </CardContent>
-          </Card>
+
+        <div className="space-y-6">
+          <div className="reveal" style={{ ['--i' as any]: 0 }}>
+            <ResumeScorecard score={resumeScore} isLoading={isAnalyzing && !hasAnalyzed} />
+          </div>
+          <div className="reveal" style={{ ['--i' as any]: 1 }}>
+            <KeywordSuggestions isLoading={isAnalyzing && !hasAnalyzed} />
+          </div>
+          <div className="reveal" style={{ ['--i' as any]: 2 }}>
+            <JobDescriptionImport onAnalyze={handleJobDescriptionAnalyze} />
+          </div>
+          <div className="reveal" style={{ ['--i' as any]: 3 }}>
+            <VersionHistory isLoading={isAnalyzing && !hasAnalyzed} />
+          </div>
+          <div className="reveal" style={{ ['--i' as any]: 4 }}>
+            <PremiumFeatures />
+          </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
